@@ -12,6 +12,11 @@ const router = createRouter({
       name: "register",
       component: () => import("@/pages/register-page.vue"),
     },
+    {
+      path: "/home",
+      name: "home",
+      component: () => import("@/pages/home-page.vue"),
+    },
   ],
 });
 export default router;

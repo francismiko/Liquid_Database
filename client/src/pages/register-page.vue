@@ -34,6 +34,7 @@
               >Submit</el-button
             >
             <el-button @click="resetForm(ruleFormRef)">Reset</el-button>
+            <el-button @click="$router.push({path:'/login'})">Login</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -44,6 +45,7 @@
 <script lang="ts" setup>
 import { reactive, ref, inject } from 'vue'
 import type { FormInstance } from 'element-plus'
+import router from '@/routers';
 
 const axios:any = inject('axios')
 
@@ -95,7 +97,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return
   formEl.validate((valid) => {
     if (valid) {
-     axios({
+      axios({
         method: 'post',
         url: 'http://localhost:3000/api/user/register',
         data: {
@@ -103,14 +105,14 @@ const submitForm = (formEl: FormInstance | undefined) => {
           passwd: ruleForm.pass
         }
       })
-      .then(function (response:any) {
-        console.log(response.config.data);
+      .then((res:any) => {
+        if (res.data.code === 200) {
+          alert('Register success')
+          router.push({path: '/login'})
+        } else {
+          alert('Register fail')
+        }
       })
-      .catch(function (error:any) {
-        console.log(error);
-      });
-      
-      console.log('submit!')
     } else {
       console.log('error submit!')
       return false

@@ -23,6 +23,7 @@
               >Submit</el-button
             >
             <el-button @click="resetForm(ruleFormRef)">Reset</el-button>
+            <el-button @click="$router.push({path:'/register'})">Register</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -33,6 +34,10 @@
 <script lang="ts" setup>
 import { reactive, ref } from 'vue'
 import type { FormInstance } from 'element-plus'
+import { useRouter } from 'vue-router';
+import axios from 'axios';
+
+const router = useRouter()
 
 const ruleFormRef = ref<FormInstance>()
 
@@ -66,9 +71,22 @@ const submitForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return
   formEl.validate((valid) => {
     if (valid) {
-      console.log('submit!')
+      axios({
+        method: 'post',
+        url: 'http://localhost:3000/api/user/login',
+        data: {
+          account: ruleForm.account,
+          passwd: ruleForm.pass
+        }
+      })
+      .then((res:any) => {
+        if (res.data.code === 200) {
+          router.replace({path: '/home'})
+        } else {
+          alert(res.data.msg)
+        }
+      })
     } else {
-      console.log('error submit!')
       return false
     }
   })

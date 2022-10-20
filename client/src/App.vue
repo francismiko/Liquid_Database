@@ -13,5 +13,6 @@ export default defineComponent({
 </script>
 
 <style>
-@import "@/assets/css/init.css";
+/* 去默认初始化 */
+@import 'normalize.css';
 </style>
