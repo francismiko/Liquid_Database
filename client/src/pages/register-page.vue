@@ -43,11 +43,10 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref, inject } from 'vue'
+import { reactive, ref } from 'vue'
 import type { FormInstance } from 'element-plus'
 import router from '@/routers';
-
-const axios:any = inject('axios')
+import axios from '@/utils/axios';
 
 const ruleFormRef = ref<FormInstance>()
 
@@ -97,20 +96,14 @@ const submitForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return
   formEl.validate((valid) => {
     if (valid) {
-      axios({
-        method: 'post',
-        url: 'http://localhost:3000/api/user/register',
-        data: {
-          account: ruleForm.account,
-          passwd: ruleForm.pass
-        }
-      })
-      .then((res:any) => {
+      axios.post('/user/register', {
+        account: ruleForm.account,
+        passwd: ruleForm.pass
+      }).then(res => {
         if (res.data.code === 200) {
-          alert('Register success')
-          router.push({path: '/login'})
+          router.push({ path: '/login' })
         } else {
-          alert('Register fail')
+          alert(res.data.message)
         }
       })
     } else {
