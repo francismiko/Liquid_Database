@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-// index.ts
 import axios from "axios";
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
+import lodash from "lodash";
 
 type Result<T> = {
   code: number;
@@ -44,7 +43,6 @@ export class Request {
         return res;
       },
       (err: any) => {
-        let message: string;
         const errMap = new Map([
           [400, "请求错误"],
           [401, "未授权，请登录"],
@@ -86,9 +84,11 @@ export class Request {
           [510, "获取资源所需要的策略并没有没满足"],
           [511, "客户端需要进行身份验证才能获得网络访问权限"],
         ]);
-        const status: string | undefined = errMap.get(err.response.status);
-        status === undefined ? (message = "未知错误") : (message = status);
-        return Promise.reject(err.response);
+        // 将err.response.statusText进行深拷贝
+        let msg: string = lodash.cloneDeepWith(err.response.statusText);
+        const errStatus: string | undefined = errMap.get(err.response.status);
+        errStatus === undefined ? (msg = "未知错误") : (msg = errStatus);
+        return Promise.reject(msg);
       }
     );
   }

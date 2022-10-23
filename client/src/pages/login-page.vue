@@ -2,28 +2,19 @@
   <div>
     <main class="default-container">
       <div class="login-form-box">
-        <p>Login</p>
-        <el-form
-          ref="ruleFormRef"
-          :label-position="labelPosition"
-          :model="ruleForm"
-          status-icon
-          :rules="rules"
-          label-width="5rem"
-          class="demo-ruleForm"
-        >
-          <el-form-item label="Accuont" prop="account">
+        <h4>登录</h4>
+        <el-form ref="ruleFormRef" :label-position="labelPosition" :model="ruleForm" status-icon :rules="rules"
+          label-width="5rem" class="demo-ruleForm">
+          <el-form-item label="账号" prop="account">
             <el-input v-model="ruleForm.account" autocomplete="off" />
           </el-form-item>
-          <el-form-item label="Password" prop="pass">
+          <el-form-item label="密码" prop="pass">
             <el-input v-model="ruleForm.pass" type="password" autocomplete="off" />
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="submitForm(ruleFormRef)"
-              >Submit</el-button
-            >
-            <el-button @click="resetForm(ruleFormRef)">Reset</el-button>
-            <el-button @click="$router.push({path:'/register'})">Register</el-button>
+            <el-button type="primary" @click="submitForm(ruleFormRef)">提交</el-button>
+            <el-button @click="resetForm(ruleFormRef)">重置</el-button>
+            <el-button @click="$router.push({path:'/register'})">注册</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -33,11 +24,15 @@
 
 <script lang="ts" setup>
 import { reactive, ref } from 'vue'
-import type { FormInstance } from 'element-plus'
+import { ElMessage, FormInstance } from 'element-plus'
 import { useRouter } from 'vue-router';
-import axios from 'axios';
+import axios from '@/utils/axios';
+import { useUserStore } from '@/store/user';
 
 const router = useRouter()
+
+// 引入store
+const userStore = useUserStore();
 
 const ruleFormRef = ref<FormInstance>()
 
@@ -46,14 +41,14 @@ const labelPosition = ref('left')
 const validateAccount = (rule: any, value: any, callback: any) => {
   if (value === '') {
     callback(new Error('Please input the account'))
-  } 
+  }
   callback()
 }
 
 const validatePass = (rule: any, value: any, callback: any) => {
   if (value === '') {
     callback(new Error('Please input the password'))
-  } 
+  }
   callback()
 }
 
@@ -71,20 +66,33 @@ const submitForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return
   formEl.validate((valid) => {
     if (valid) {
-      axios({
-        method: 'post',
-        url: 'http://localhost:3000/api/user/login',
-        data: {
-          account: ruleForm.account,
-          passwd: ruleForm.pass
-        }
-      })
-      .then((res:any) => {
+      axios.post('/user/login', {
+        account: ruleForm.account,
+        passwd: ruleForm.pass
+      }).then(res => {
         if (res.data.code === 200) {
-          router.replace({path: '/home'})
+          ElMessage({
+            message: '登录成功！',
+            type: 'success'
+          })
+          router.push({ path: '/home' })
+          // 更新状态
+          userStore.$patch((state) => {
+            state.checkLogin.isLogin = true
+            state.userInfo.userName = ruleForm.account
+          })
         } else {
-          alert(res.data.msg)
+          ElMessage({
+            message: '登录失败！',
+            type: 'error'
+          })
         }
+      }).catch(err => {
+        ElMessage({
+          message: `${err}`,
+          type: 'error'
+        })
+        console.error(err);
       })
     } else {
       return false
@@ -98,7 +106,7 @@ const resetForm = (formEl: FormInstance | undefined) => {
 }
 </script >
 
-<style lang="scss">
+<style lang="scss" scoped>
 .default-container {
   display: grid;
   align-items: center;

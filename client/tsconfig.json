@@ -21,7 +21,8 @@
     "skipLibCheck": true,
     "types": [
       "vite/client",
-      "node"
+      "node",
+      "pinia-plugin-persistedstate"
     ],
     "typeRoots": [
       "../node_modules/@types"
