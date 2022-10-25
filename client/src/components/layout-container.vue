@@ -3,20 +3,35 @@
     <div class="common-layout">
       <el-container>
         <el-header class="header">
-          <el-menu :default-active="null" class="el-menu-demo" mode="horizontal" :ellipsis="false"
-            @select="handleSelect" text-color="#fff" background-color="#262f3e">
-            <el-menu-item index="0">Francismiko</el-menu-item>
+          <el-menu :default-active="router.currentRoute.value.path" class="el-menu-demo" mode="horizontal"
+            :ellipsis="false" @select="handleSelect" text-color="#fff" background-color="#262f3e">
+            <el-menu-item @click="jumpTo('/home')" index="/home">
+              <el-icon>
+                <HomeFilled />
+              </el-icon>
+              <span>Francismiko</span>
+            </el-menu-item>
             <div class="flex-grow" />
-            <el-menu-item index="1">Processing Center</el-menu-item>
+            <el-menu-item index="1">
+              <el-icon>
+                <Message />
+              </el-icon>
+              <span>消息</span>
+            </el-menu-item>
             <el-sub-menu index="2">
-              <template #title>{{
-                  userStore.checkLogin.isLogin ? userStore.userInfo.userName : "未登录"
-              }}
+              <template #title>
+                <el-icon>
+                  <UserFilled />
+                </el-icon>
+                <span>{{
+                    isLogin ? userName : "未登录"
+                }}
+                </span>
               </template>
               <el-menu-item index="2-1">个人中心</el-menu-item>
               <el-menu-item index="2-2">设置</el-menu-item>
               <el-menu-item @click="changeLogin" index="2-3">{{
-                  userStore.checkLogin.isLogin ? "注销账号" : "点此登录"
+                  isLogin ? "注销账号" : "点此登录"
               }}
               </el-menu-item>
             </el-sub-menu>
@@ -25,33 +40,33 @@
         <el-container>
           <el-aside class="aside">
             <el-col :span="12">
-              <el-menu default-active="null" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose"
-                text-color="#fff" background-color="#00000000">
+              <el-menu :router="true" :default-active="router.currentRoute.value.path" class="el-menu-vertical-demo"
+                @open="handleOpen" @close="handleClose" text-color="#fff" background-color="#00000000">
                 <el-sub-menu index="1">
                   <template #title>
                     <el-icon>
-                      <location />
+                      <Connection />
                     </el-icon>
                     <span>连接本地数据库</span>
                   </template>
-                  <el-menu-item index="1-1">MySQL</el-menu-item>
-                  <el-menu-item index="1-2">MongoDB</el-menu-item>
+                  <el-menu-item index="/home/connections/mysql">MySQL</el-menu-item>
+                  <el-menu-item index="/home/connections/mongodb">MongoDB</el-menu-item>
                   <el-menu-item index="1-3">SQLite</el-menu-item>
                   <el-menu-item index="1-4">Redis</el-menu-item>
                 </el-sub-menu>
-                <el-menu-item index="2">
+                <el-menu-item index="/home/details">
                   <el-icon>
                     <icon-menu />
                   </el-icon>
                   <span>详情概览</span>
                 </el-menu-item>
-                <el-menu-item index="3">
+                <el-menu-item index="/home/logs">
                   <el-icon>
                     <document />
                   </el-icon>
                   <span>控制台日志</span>
                 </el-menu-item>
-                <el-menu-item index="4">
+                <el-menu-item index="/home/settings">
                   <el-icon>
                     <setting />
                   </el-icon>
@@ -75,13 +90,16 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
+import { ref, inject} from "vue";
 import { useUserStore } from "@/store/user";
 import {
   Document,
   Menu as IconMenu,
-  Location,
   Setting,
+  UserFilled,
+  HomeFilled,
+  Connection,
+  Message,
 } from "@element-plus/icons-vue";
 import { useRouter } from "vue-router";
 
@@ -96,24 +114,29 @@ const handleSelect = (key: string, keyPath: string[]) => {
 };
 
 const router = useRouter();
+const jumpTo = (path: string) => {
+  router.push(path);
+};
+const reload = inject("reload",Function,true);
 
 // 引入store
 const userStore = ref(useUserStore());
+const { isLogin } = { ...userStore.value.checkLogin };
+const { isAdmin, userID, userName } = { ...userStore.value.userInfo };
 
 const changeLogin = () => {
-  if (userStore.value.checkLogin.isLogin) {
-    // 重置全局状态
+  if (isLogin) {
+    // 重置全局状态并刷新页面
     userStore.value.$reset()
+    reload();
   } else {
-    router.push('/login')
+    jumpTo('/login')
   }
 };
 
 const test = () => {
-  console.log(
-    userStore.value.userInfo.userName,
-    userStore.value.checkLogin.isLogin
-  );
+  console.log(userID);
+
 };
 </script >
 

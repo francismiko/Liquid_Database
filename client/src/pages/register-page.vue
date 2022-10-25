@@ -17,7 +17,7 @@
           <el-form-item>
             <el-button type="primary" @click="submitForm(ruleFormRef)">提交</el-button>
             <el-button @click="resetForm(ruleFormRef)">重置</el-button>
-            <el-button @click="$router.push({path:'/login'})">登录</el-button>
+            <el-button @click="$router.push({ path: '/login' })">登录</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -81,7 +81,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
     if (valid) {
       axios.post('/user/register', {
         account: ruleForm.account,
-        passwd: ruleForm.pass
+        password: ruleForm.pass
       }).then(res => {
         if (res.data.code === 200) {
           ElMessage({

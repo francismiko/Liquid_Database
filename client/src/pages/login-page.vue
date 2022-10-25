@@ -68,11 +68,11 @@ const submitForm = (formEl: FormInstance | undefined) => {
     if (valid) {
       axios.post('/user/login', {
         account: ruleForm.account,
-        passwd: ruleForm.pass
+        password: ruleForm.pass
       }).then(res => {
         if (res.data.code === 200) {
           ElMessage({
-            message: '登录成功！',
+            message: `登录成功！${ruleForm.account}欢迎回来！`,
             type: 'success'
           })
           router.push({ path: '/home' })
@@ -80,6 +80,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
           userStore.$patch((state) => {
             state.checkLogin.isLogin = true
             state.userInfo.userName = ruleForm.account
+            state.userInfo.userID = res.data._id
           })
         } else {
           ElMessage({

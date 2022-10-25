@@ -2,13 +2,11 @@ const User = require('../model/user');
 
 class UserService {
   // 创建新用户
-  async createUser(account, passwd) {
-    User.create([
-      {
-        account: account,
-        passwd: passwd,
-      }
-    ]);
+  async createUser(account, password) {
+    User.create({
+      account: account,
+      password: password,
+    });
   }
   // 查找用户名是否存在
   async checkAccount(account) {
@@ -18,10 +16,10 @@ class UserService {
     return user // null || object
   }
   // 查找账号是否存在
-  async checkUser(account, passwd) {
+  async checkUser(account, password) {
     const user = User.findOne({
       account: account,
-      passwd: passwd,
+      password: password,
     }).exec();
     return user // null || object
   }

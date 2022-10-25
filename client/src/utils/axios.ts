@@ -3,8 +3,9 @@ import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 import lodash from "lodash";
 
 type Result<T> = {
+  _id: string;
   code: number;
-  message: string;
+  msg: string;
   result: T;
 };
 

@@ -7,7 +7,7 @@ export const useUserStore = defineStore("user", {
         isLogin: false,
       },
       userInfo: {
-        isRoot: false,
+        isAdmin: false,
         userID: "",
         userName: "",
       },
