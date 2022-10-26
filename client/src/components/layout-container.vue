@@ -90,7 +90,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, inject} from "vue";
+import { ref, inject } from "vue";
 import { useUserStore } from "@/store/user";
 import {
   Document,
@@ -102,6 +102,7 @@ import {
   Message,
 } from "@element-plus/icons-vue";
 import { useRouter } from "vue-router";
+import { ElMessage, ElMessageBox } from "element-plus";
 
 const handleOpen = (key: string, keyPath: string[]) => {
   console.log(key, keyPath);
@@ -117,7 +118,7 @@ const router = useRouter();
 const jumpTo = (path: string) => {
   router.push(path);
 };
-const reload = inject("reload",Function,true);
+const reload = inject("reload", Function, true);
 
 // 引入store
 const userStore = ref(useUserStore());
@@ -126,9 +127,24 @@ const { isAdmin, userID, userName } = { ...userStore.value.userInfo };
 
 const changeLogin = () => {
   if (isLogin) {
-    // 重置全局状态并刷新页面
-    userStore.value.$reset()
-    reload();
+    ElMessageBox.confirm(
+      '是否注销当前已登录的账号?',
+      '注销账号',
+      {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }
+    )
+      .then(() => {
+        // 重置全局状态并刷新页面
+        userStore.value.$reset()
+        reload();
+        ElMessage({
+          type: 'success',
+          message: `@${userName}注销成功!`,
+        })
+      });
   } else {
     jumpTo('/login')
   }
