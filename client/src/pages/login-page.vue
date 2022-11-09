@@ -14,7 +14,7 @@
           <el-form-item>
             <el-button type="primary" @click="submitForm(ruleFormRef)">提交</el-button>
             <el-button @click="resetForm(ruleFormRef)">重置</el-button>
-            <el-button @click="$router.push({path:'/register'})">注册</el-button>
+            <el-button @click="$router.push({ path: '/register' })">注册</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -71,17 +71,23 @@ const submitForm = (formEl: FormInstance | undefined) => {
         password: ruleForm.pass
       }).then(res => {
         if (res.data.code === 200) {
-          ElMessage({
-            message: `登录成功！${ruleForm.account}欢迎回来！`,
-            type: 'success'
-          })
           router.push({ path: '/home' })
           // 更新状态
           userStore.$patch((state) => {
             state.checkLogin.isLogin = true
             state.userInfo.userName = ruleForm.account
             state.userInfo.userID = res.data._id
+            state.userInfo.isAdmin = res.data.isAdmin
           })
+          userStore.userInfo.isAdmin ?
+            ElMessage({
+              message: `登录成功！管理员：<${ruleForm.account}>，欢迎回来！`,
+              type: 'success'
+            }):
+            ElMessage({
+              message: `登录成功！用户：<${ruleForm.account}>，欢迎回来！`,
+              type: 'success'
+            })
         } else {
           ElMessage({
             message: '登录失败！',

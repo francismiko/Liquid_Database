@@ -1,7 +1,11 @@
 <template>
-  <layout>
-
-  </layout>
+  <div>
+    <layout>
+      <template #main>
+        <img src="@/assets/imgs/mysql.jpeg" alt="LOGO">
+      </template>
+    </layout>
+  </div>
 </template>
 
 <script lang="ts" setup>

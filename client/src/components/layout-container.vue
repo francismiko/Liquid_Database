@@ -24,7 +24,10 @@
                   <UserFilled />
                 </el-icon>
                 <span>{{
-                    isLogin ? userName : "未登录"
+                    isLogin ? isAdmin ?
+                      `${userName} (管理员)` :
+                      `${userName} (普通用户)` :
+                      "未登录"
                 }}
                 </span>
               </template>
@@ -49,8 +52,8 @@
                     </el-icon>
                     <span>连接本地数据库</span>
                   </template>
-                  <el-menu-item index="/home/connections/mysql">MySQL</el-menu-item>
-                  <el-menu-item index="/home/connections/mongodb">MongoDB</el-menu-item>
+                  <el-menu-item index="/home/connection/mysql">MySQL</el-menu-item>
+                  <el-menu-item index="/home/connection/mongodb">MongoDB</el-menu-item>
                   <el-menu-item index="1-3">SQLite</el-menu-item>
                   <el-menu-item index="1-4">Redis</el-menu-item>
                 </el-sub-menu>
@@ -75,14 +78,9 @@
               </el-menu>
             </el-col>
           </el-aside>
-          <el-container>
-            <el-main class="main">
-              <el-button @click="test" type="primary">测试</el-button>
-              <slot></slot>
-            </el-main>
-
-            <el-footer></el-footer>
-          </el-container>
+          <el-main class="main-container">
+            <slot name="main">施工中...</slot>
+          </el-main>
         </el-container>
       </el-container>
     </div>
@@ -149,11 +147,6 @@ const changeLogin = () => {
     jumpTo('/login')
   }
 };
-
-const test = () => {
-  console.log(userID);
-
-};
 </script >
 
 <style lang="scss" scoped>
@@ -182,9 +175,10 @@ $aside-width: 15rem;
   background-color: #1e222d;
 }
 
-.main {
-  padding-top: $header-height;
-  padding-left: $aside-width;
+.main-container {
+  min-height: 120vh;
+  padding-top: $header-height + 1.25rem;
+  padding-left: $aside-width + 1.25rem;
   background-color: #f3f4f7;
 }
 
