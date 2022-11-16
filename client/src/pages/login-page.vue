@@ -71,7 +71,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
         password: ruleForm.pass
       }).then(res => {
         if (res.data.code === 200) {
-          router.push({ path: '/home' })
+          router.push({ path: res.data._id })
           // 更新状态
           userStore.$patch((state) => {
             state.checkLogin.isLogin = true

@@ -3,9 +3,9 @@
     <div class="common-layout">
       <el-container>
         <el-header class="header">
-          <el-menu :default-active="router.currentRoute.value.path" class="el-menu-demo" mode="horizontal"
-            :ellipsis="false" @select="handleSelect" text-color="#fff" background-color="#262f3e">
-            <el-menu-item @click="jumpTo('/home')" index="/home">
+          <el-menu :router="false" :default-active="router.currentRoute.value.path" class="el-menu-demo"
+            mode="horizontal" :ellipsis="false" @select="handleSelect" text-color="#fff" background-color="#262f3e">
+            <el-menu-item @click="jumpTo(`/${userID}`)" index="">
               <el-icon>
                 <HomeFilled />
               </el-icon>
@@ -45,41 +45,54 @@
             <el-col :span="12">
               <el-menu :router="true" :default-active="router.currentRoute.value.path" class="el-menu-vertical-demo"
                 @open="handleOpen" @close="handleClose" text-color="#fff" background-color="#00000000">
-                <el-sub-menu index="1">
+
+                <!-- 用户模块 -->
+                <el-sub-menu index="/connection" v-if="!isAdmin">
                   <template #title>
                     <el-icon>
                       <Connection />
                     </el-icon>
                     <span>连接本地数据库</span>
                   </template>
-                  <el-menu-item index="/home/connection/mysql">MySQL</el-menu-item>
-                  <el-menu-item index="/home/connection/mongodb">MongoDB</el-menu-item>
-                  <el-menu-item index="1-3">SQLite</el-menu-item>
-                  <el-menu-item index="1-4">Redis</el-menu-item>
+                  <el-menu-item :index="userRouterMap.get(1_1)">MySQL</el-menu-item>
+                  <el-menu-item :index="userRouterMap.get(1_2)">MongoDB</el-menu-item>
+                  <el-menu-item index="1-3" disabled>SQLite</el-menu-item>
+                  <el-menu-item index="1-4" disabled>Redis</el-menu-item>
                 </el-sub-menu>
-                <el-menu-item index="/home/details">
+                <el-menu-item :index="userRouterMap.get(2)" v-if="!isAdmin">
                   <el-icon>
                     <icon-menu />
                   </el-icon>
                   <span>详情概览</span>
                 </el-menu-item>
-                <el-menu-item index="/home/logs">
+                <el-menu-item :index="userRouterMap.get(3)" v-if="!isAdmin">
                   <el-icon>
                     <document />
                   </el-icon>
                   <span>控制台日志</span>
                 </el-menu-item>
-                <el-menu-item index="/home/settings">
+                <el-menu-item :index="userRouterMap.get(4)" v-if="!isAdmin">
                   <el-icon>
                     <setting />
                   </el-icon>
                   <span>数据库设置</span>
                 </el-menu-item>
+
+                <!-- 管理员模块 -->
+                <el-sub-menu index="/connection" v-if="isAdmin">
+                  <template #title>
+                    <el-icon>
+                      <Connection />
+                    </el-icon>
+                    <span>权限管理</span>
+                  </template>
+                  <el-menu-item>MySQL</el-menu-item>
+                </el-sub-menu>
               </el-menu>
             </el-col>
           </el-aside>
           <el-main class="main-container">
-            <slot name="main">施工中...</slot>
+            <router-view></router-view>
           </el-main>
         </el-container>
       </el-container>
@@ -88,7 +101,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, inject } from "vue";
+import { ref, inject, onBeforeMount } from "vue";
 import { useUserStore } from "@/store/user";
 import {
   Document,
@@ -102,26 +115,38 @@ import {
 import { useRouter } from "vue-router";
 import { ElMessage, ElMessageBox } from "element-plus";
 
-const handleOpen = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath);
-};
-const handleClose = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath);
-};
-const handleSelect = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath);
-};
-
-const router = useRouter();
-const jumpTo = (path: string) => {
-  router.push(path);
-};
-const reload = inject("reload", Function, true);
-
 // 引入store
 const userStore = ref(useUserStore());
 const { isLogin } = { ...userStore.value.checkLogin };
-const { isAdmin, userID, userName } = { ...userStore.value.userInfo };
+const { isAdmin, userName, userID } = { ...userStore.value.userInfo };
+
+const router = useRouter();
+
+const jumpTo = (path: string) => {
+  router.push({ path: `${path}` });
+};
+
+const reload = inject("reload", Function, true);
+
+onBeforeMount(() => {
+  console.log(router.currentRoute.value.path);
+})
+
+const adminRouterMap = new Map([
+  [1_1, `/${userID}/connection/mysql`],
+  [1_2, `/${userID}/connection/mongodb`],
+  [2, `/${userID}/details`],
+  [3, `/${userID}/logs`],
+  [4, `/${userID}/settings`],
+]);
+
+const userRouterMap = new Map([
+  [1_1, `/${userID}/connection/mysql`],
+  [1_2, `/${userID}/connection/mongodb`],
+  [2, `/${userID}/details`],
+  [3, `/${userID}/logs`],
+  [4, `/${userID}/settings`],
+]);
 
 const changeLogin = () => {
   if (isLogin) {
@@ -135,6 +160,7 @@ const changeLogin = () => {
       }
     )
       .then(() => {
+        jumpTo('/')
         // 重置全局状态并刷新页面
         userStore.value.$reset()
         reload();
@@ -147,6 +173,19 @@ const changeLogin = () => {
     jumpTo('/login')
   }
 };
+
+const handleOpen = (key: string, keyPath: string[]) => {
+  console.log(key, keyPath);
+};
+
+const handleClose = (key: string, keyPath: string[]) => {
+  console.log(key, keyPath);
+};
+
+const handleSelect = (key: string, keyPath: string[]) => {
+  console.log(key, keyPath);
+};
+
 </script >
 
 <style lang="scss" scoped>
@@ -160,6 +199,7 @@ $aside-width: 15rem;
   width: 100vw;
   height: $header-height;
   z-index: 100;
+  user-select: none;
   background-color: #262f3e;
 }
 
@@ -172,6 +212,7 @@ $aside-width: 15rem;
   padding-top: $header-height;
   z-index: 99;
   box-sizing: border-box;
+  user-select: none;
   background-color: #1e222d;
 }
 
@@ -192,5 +233,9 @@ $aside-width: 15rem;
 
 :deep(.el-col-12) {
   max-width: 100%;
+}
+
+:deep(.el-menu-item) {
+  user-select: none;
 }
 </style>
