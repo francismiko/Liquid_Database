@@ -5,19 +5,19 @@
     <item>
       <el-form ref="ruleFormRef" :rules="rules" :inline="true" :model="ruleForm" label-width="16rem"
         class="demo-ruleForm">
-        <el-form-item label="HOST" prop="host" required="true">
-          <el-input v-model="ruleForm.host" placeholder="数据库地址"/>
+        <el-form-item label="HOST" prop="host" :required="true">
+          <el-input v-model="ruleForm.host" placeholder="数据库地址" />
         </el-form-item>
-        <el-form-item label="PORT" prop="port" required="true">
+        <el-form-item label="PORT" prop="port" :required="true">
           <el-input v-model="ruleForm.port" placeholder="端口号" />
         </el-form-item>
-        <el-form-item label="USER" prop="user" required="true">
+        <el-form-item label="USER" prop="user" :required="true">
           <el-input v-model="ruleForm.user" placeholder="用户名" />
         </el-form-item>
-        <el-form-item label="PASSWORD" prop="password" required="true">
+        <el-form-item label="PASSWORD" prop="password" :required="true">
           <el-input v-model="ruleForm.password" placeholder="登录密码" />
         </el-form-item>
-        <el-form-item label="DATABASE" prop="database" required="true">
+        <el-form-item label="DATABASE" prop="database" :required="true">
           <el-input v-model="ruleForm.database" placeholder="要操作的数据库名" />
         </el-form-item>
       </el-form>
@@ -33,6 +33,11 @@
 import item from '@/components/item-container.vue'
 import { FormInstance } from 'element-plus';
 import { reactive, ref } from 'vue';
+import { useUserStore } from '@/store/user';
+import axios from '@/utils/axios';
+
+// 引入store
+const userStore = useUserStore();
 
 const ruleFormRef = ref<FormInstance>()
 
@@ -63,8 +68,16 @@ const saveConfig = (formEl: FormInstance | undefined) => {
   if (!formEl) return
   formEl.validate((valid: any) => {
     if (valid) {
-      console.log('ok');
-      
+      axios.post('/connection/mysql', {
+        _id: userStore.userInfo.userID,
+        host: ruleForm.host,
+        port: ruleForm.port,
+        user: ruleForm.user,
+        password: ruleForm.password,
+        database: ruleForm.database,
+      }).then(res => {
+        console.log(res)
+      })
     } else {
       console.log('error submit!!')
       return false

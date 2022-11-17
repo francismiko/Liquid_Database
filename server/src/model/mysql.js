@@ -1,6 +1,6 @@
 const mongoose = require('./index');
 
-var ConnectionSchema = new mongoose.Schema({
+var mysqlSchema = new mongoose.Schema({
   _id: { type: String },
   mysql_host: { type: String },
   mysql_port: { type: Number },
@@ -9,6 +9,6 @@ var ConnectionSchema = new mongoose.Schema({
   mysql_database: { type: String },
 }, { versionKey: false })
 
-var Connection = mongoose.model('connection', ConnectionSchema)
+var mysqlConnection = mongoose.model('mysql_connection', mysqlSchema)
 
-module.exports = Connection;
+module.exports = mysqlConnection;
