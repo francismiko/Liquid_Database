@@ -5,7 +5,7 @@
         <el-header class="header">
           <el-menu :router="false" :default-active="router.currentRoute.value.path" class="el-menu-demo"
             mode="horizontal" :ellipsis="false" @select="handleSelect" text-color="#fff" background-color="#262f3e">
-            <el-menu-item @click="jumpTo(`/${userID}`)" index="">
+            <el-menu-item @click="jumpTo(`/${userID}`)" index="home">
               <el-icon>
                 <HomeFilled />
               </el-icon>
@@ -25,7 +25,7 @@
                 </el-icon>
                 <span>{{
                     isLogin ? isAdmin ?
-                      `${userName} (管理员)` :
+                      `${userName} (超级用户)` :
                       `${userName} (普通用户)` :
                       "未登录"
                 }}
@@ -47,7 +47,7 @@
                 @open="handleOpen" @close="handleClose" text-color="#fff" background-color="#00000000">
 
                 <!-- 用户模块 -->
-                <el-sub-menu index="/connection" v-if="!isAdmin">
+                <el-sub-menu index="/connection">
                   <template #title>
                     <el-icon>
                       <Connection />
@@ -59,19 +59,19 @@
                   <el-menu-item index="1-3" disabled>SQLite</el-menu-item>
                   <el-menu-item index="1-4" disabled>Redis</el-menu-item>
                 </el-sub-menu>
-                <el-menu-item :index="userRouterMap.get(2)" v-if="!isAdmin">
+                <el-menu-item :index="userRouterMap.get(2)">
                   <el-icon>
                     <icon-menu />
                   </el-icon>
                   <span>详情概览</span>
                 </el-menu-item>
-                <el-menu-item :index="userRouterMap.get(3)" v-if="!isAdmin">
+                <el-menu-item :index="userRouterMap.get(3)">
                   <el-icon>
                     <document />
                   </el-icon>
                   <span>控制台日志</span>
                 </el-menu-item>
-                <el-menu-item :index="userRouterMap.get(4)" v-if="!isAdmin">
+                <el-menu-item :index="userRouterMap.get(4)">
                   <el-icon>
                     <setting />
                   </el-icon>
@@ -79,15 +79,35 @@
                 </el-menu-item>
 
                 <!-- 管理员模块 -->
-                <el-sub-menu index="/connection" v-if="isAdmin">
+                <el-sub-menu v-if="isAdmin" index="/manage">
                   <template #title>
                     <el-icon>
-                      <Connection />
+                      <User />
                     </el-icon>
-                    <span>权限管理</span>
+                    <span>用户管理</span>
                   </template>
-                  <el-menu-item>MySQL</el-menu-item>
+                  <el-menu-item index="1">权限管理</el-menu-item>
+                  <el-menu-item disabled>用户组管理</el-menu-item>
+                  <el-menu-item disabled>黑名单</el-menu-item>
                 </el-sub-menu>
+                <el-menu-item v-if="isAdmin">
+                  <el-icon>
+                    <Message />
+                  </el-icon>
+                  <span>站内消息管理</span>
+                </el-menu-item>
+                <el-menu-item v-if="isAdmin">
+                  <el-icon>
+                    <List />
+                  </el-icon>
+                  <span>用户行为日志</span>
+                </el-menu-item>
+                <el-menu-item v-if="isAdmin">
+                  <el-icon>
+                    <Failed />
+                  </el-icon>
+                  <span>异常状态日志</span>
+                </el-menu-item>
               </el-menu>
             </el-col>
           </el-aside>
@@ -101,7 +121,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, inject, onBeforeMount } from "vue";
+import { ref, inject } from "vue";
 import { useUserStore } from "@/store/user";
 import {
   Document,
@@ -111,6 +131,9 @@ import {
   HomeFilled,
   Connection,
   Message,
+  User,
+  List,
+  Failed,
 } from "@element-plus/icons-vue";
 import { useRouter } from "vue-router";
 import { ElMessage, ElMessageBox } from "element-plus";
@@ -128,18 +151,7 @@ const jumpTo = (path: string) => {
 
 const reload = inject("reload", Function, true);
 
-onBeforeMount(() => {
-  console.log(router.currentRoute.value.path);
-})
-
-const adminRouterMap = new Map([
-  [1_1, `/${userID}/connection/mysql`],
-  [1_2, `/${userID}/connection/mongodb`],
-  [2, `/${userID}/details`],
-  [3, `/${userID}/logs`],
-  [4, `/${userID}/settings`],
-]);
-
+// 路由映射
 const userRouterMap = new Map([
   [1_1, `/${userID}/connection/mysql`],
   [1_2, `/${userID}/connection/mongodb`],
@@ -160,7 +172,7 @@ const changeLogin = () => {
       }
     )
       .then(() => {
-        jumpTo('/')
+        router.replace({ path: '/' });
         // 重置全局状态并刷新页面
         userStore.value.$reset()
         reload();
@@ -170,7 +182,7 @@ const changeLogin = () => {
         })
       });
   } else {
-    jumpTo('/login')
+    router.push({ path:"/login" });
   }
 };
 
@@ -218,8 +230,10 @@ $aside-width: 15rem;
 
 .main-container {
   min-height: 120vh;
-  padding-top: $header-height + 1.25rem;
-  padding-left: $aside-width + 1.25rem;
+  padding-top: $header-height + 2rem;
+  padding-left: $aside-width + 2rem;
+  padding-right: 2rem;
+  padding-bottom: 2rem;
   background-color: #f3f4f7;
 }
 

@@ -1,10 +1,12 @@
 const Router = require('koa-router');
 const user = require('./user');
+const connection = require('./connection');
 
 const router = new Router({ prefix: '/api' });
 
 // 注册api中间件
 router.use(user.routes());
+router.use(connection.routes());
 
 // api可用性测试
 router.get('/', async (ctx) => {

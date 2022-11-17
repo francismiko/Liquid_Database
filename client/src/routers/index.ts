@@ -24,26 +24,26 @@ const router = createRouter({
             {
               path: "mysql",
               component: () =>
-                import("@/pages/home/connection/mysql/mysql-page.vue"),
+                import("@/pages/home/user/connection/mysql/mysql-page.vue"),
             },
             {
               path: "mongodb",
               component: () =>
-                import("@/pages/home/connection/mongodb/mongodb-page.vue"),
+                import("@/pages/home/user/connection/mongodb/mongodb-page.vue"),
             },
           ],
         },
         {
           path: "details",
-          component: () => import("@/pages/home/detail/detail-page.vue"),
+          component: () => import("@/pages/home/user/detail/detail-page.vue"),
         },
         {
           path: "settings",
-          component: () => import("@/pages/home/setting/setting-page.vue"),
+          component: () => import("@/pages/home/user/setting/setting-page.vue"),
         },
         {
           path: "logs",
-          component: () => import("@/pages/home/log/log-page.vue"),
+          component: () => import("@/pages/home/user/log/log-page.vue"),
         },
       ],
     },

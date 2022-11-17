@@ -38,6 +38,7 @@ const ruleFormRef = ref<FormInstance>()
 
 const labelPosition = ref('left')
 
+// 校验账号
 const validateAccount = (rule: any, value: any, callback: any) => {
   if (value === '') {
     callback(new Error('Please input the account'))
@@ -45,6 +46,7 @@ const validateAccount = (rule: any, value: any, callback: any) => {
   callback()
 }
 
+// 校验密码
 const validatePass = (rule: any, value: any, callback: any) => {
   if (value === '') {
     callback(new Error('Please input the password'))
@@ -83,7 +85,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
             ElMessage({
               message: `登录成功！管理员：<${ruleForm.account}>，欢迎回来！`,
               type: 'success'
-            }):
+            }):          
             ElMessage({
               message: `登录成功！用户：<${ruleForm.account}>，欢迎回来！`,
               type: 'success'
