@@ -1,13 +1,14 @@
-const { mysqlConnection } = require('../service/connection');
+const Connection = require('../service/connection');
 
 class ConnectionController {
   async saveMysqlConfig(ctx, next) {
-    const { _id, host, port, user, password, database } = ctx.request.body
-    await mysqlConnection(_id, host, port, user, password, database);
+    const { id, host, port, user, password, database } = ctx.request.body
+    await Connection.saveMysqlConfig(id, host, port, user, password, database);
     ctx.body = {
       code: 200,
       msg: '保存成功',
     }
+    
   }
 }
 

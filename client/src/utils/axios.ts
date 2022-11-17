@@ -5,7 +5,7 @@ import lodash from "lodash";
 type Result<T> = {
   code: number;
   msg: string;
-  _id: string;
+  uid: string;
   isAdmin: boolean;
   result: T;
 };

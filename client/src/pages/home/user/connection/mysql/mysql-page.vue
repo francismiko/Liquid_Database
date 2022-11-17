@@ -31,7 +31,7 @@
 
 <script lang="ts" setup>
 import item from '@/components/item-container.vue'
-import { FormInstance } from 'element-plus';
+import { ElNotification, FormInstance } from 'element-plus';
 import { reactive, ref } from 'vue';
 import { useUserStore } from '@/store/user';
 import axios from '@/utils/axios';
@@ -69,17 +69,34 @@ const saveConfig = (formEl: FormInstance | undefined) => {
   formEl.validate((valid: any) => {
     if (valid) {
       axios.post('/connection/mysql', {
-        _id: userStore.userInfo.userID,
+        id: userStore.userInfo.userID,
         host: ruleForm.host,
         port: ruleForm.port,
         user: ruleForm.user,
         password: ruleForm.password,
         database: ruleForm.database,
-      }).then(res => {
-        console.log(res)
+      }).then(res => {        
+        if (res.data.code === 200) {
+          ElNotification({
+            title: 'Success',
+            message: '配置保存成功！',
+            type: 'success',
+          })
+        } else {
+          ElNotification({
+            title: 'Error',
+            message: '配置保存失败！',
+            type: 'error',
+          })
+        }
+      }).catch(err => {
+        ElNotification({
+          title: 'Error',
+          message: `${err}`,
+          type: 'error',
+        })
       })
     } else {
-      console.log('error submit!!')
       return false
     }
   })

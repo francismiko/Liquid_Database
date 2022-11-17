@@ -73,19 +73,19 @@ const submitForm = (formEl: FormInstance | undefined) => {
         password: ruleForm.pass
       }).then(res => {
         if (res.data.code === 200) {
-          router.push({ path: res.data._id })
+          router.push({ path: res.data.uid })
           // 更新状态
           userStore.$patch((state) => {
             state.checkLogin.isLogin = true
             state.userInfo.userName = ruleForm.account
-            state.userInfo.userID = res.data._id
+            state.userInfo.userID = res.data.uid
             state.userInfo.isAdmin = res.data.isAdmin
           })
           userStore.userInfo.isAdmin ?
             ElMessage({
               message: `登录成功！管理员：<${ruleForm.account}>，欢迎回来！`,
               type: 'success'
-            }):          
+            }) :
             ElMessage({
               message: `登录成功！用户：<${ruleForm.account}>，欢迎回来！`,
               type: 'success'

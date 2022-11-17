@@ -1,15 +1,43 @@
 const mysqlConnection = require('../model/mysql');
 
 class ConnectionService {
-  // 创建新连接配置
-  async mysqlConnection(_id, host, port, user, password, database) {
-    mysqlConnection.create({
-      _id: _id,
+  // 保存mysql配置
+  async saveMysqlConfig(id, host, port, user, password, database) {
+    // 查询id，有则更新，没有则新建
+    mysqlConnection.findOneAndUpdate({
+      uid: id
+    }, {
+      uid: id,
       mysql_host: host,
       mysql_port: port,
       mysql_user: user,
       mysql_password: password,
       mysql_database: database,
+    }, { new: true }, (err, data) => {
+      if (err) {
+        console.log(err);
+        return;
+      } else if (data) {
+        console.log('mysql配置更新成功');
+        console.log(data);
+      } else if (data === null) {
+        mysqlConnection.create({
+          uid: id,
+          mysql_host: host,
+          mysql_port: port,
+          mysql_user: user,
+          mysql_password: password,
+          mysql_database: database,
+        }, (err, data) => {
+          if (err) {
+            console.log(err);
+            return;
+          } else {
+            console.log('mysql配置新建成功');
+            console.log(data);
+          }
+        });
+      }
     });
   }
 }
