@@ -96,7 +96,7 @@
                   </el-icon>
                   <span>站内消息管理</span>
                 </el-menu-item>
-                <el-menu-item v-if="isAdmin">
+                <el-menu-item :index="userRouterMap.get(7)" v-if="isAdmin">
                   <el-icon>
                     <List />
                   </el-icon>
@@ -158,6 +158,7 @@ const userRouterMap = new Map([
   [2, `/${userID}/details`],
   [3, `/${userID}/logs`],
   [4, `/${userID}/settings`],
+  [7, `/${userID}/action_logs`],
 ]);
 
 const changeLogin = () => {

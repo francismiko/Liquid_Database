@@ -1,10 +1,10 @@
-const mysqlConnection = require('../model/mysql');
+const mysqlConfig = require('../model/mysql');
 
 class ConnectionService {
   // 保存mysql配置
   async saveMysqlConfig(id, host, port, user, password, database) {
     // 查询id，有则更新，没有则新建
-    mysqlConnection.findOneAndUpdate({
+    mysqlConfig.findOneAndUpdate({
       uid: id
     }, {
       uid: id,
@@ -21,7 +21,7 @@ class ConnectionService {
         console.log('mysql配置更新成功');
         console.log(data);
       } else if (data === null) {
-        mysqlConnection.create({
+        mysqlConfig.create({
           uid: id,
           mysql_host: host,
           mysql_port: port,

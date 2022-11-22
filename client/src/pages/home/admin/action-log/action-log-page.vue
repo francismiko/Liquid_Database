@@ -1,11 +1,13 @@
 <template>
   <div>
-
+    <item>
+      
+    </item>
   </div>
 </template>
 
 <script lang="ts" setup>
-import layout from '@/components/layout-container.vue'
+import item from '@/components/item-container.vue'
 
 </script >
 
