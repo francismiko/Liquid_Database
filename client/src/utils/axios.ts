@@ -45,7 +45,7 @@ export class Request {
         return res;
       },
       (err: any) => {
-        const errMap = new Map([
+        const errMap: Map<number, string> = new Map([
           [400, "请求错误"],
           [401, "未授权，请登录"],
           [403, "拒绝访问"],

@@ -1,17 +1,21 @@
 import { defineStore } from "pinia";
+import { ref } from "vue";
 
-export const useUserStore = defineStore("user", {
-  state: () => {
-    return {
-      checkLogin: {
-        isLogin: false,
-      },
-      userInfo: {
-        isAdmin: false,
-        userID: "",
-        userName: "",
-      },
-    };
+export const useUserStore = defineStore(
+  "user",
+  () => {
+    const checkLogin = ref({
+      isLogin: false,
+    });
+
+    const userInfo = ref({
+      isAdmin: false,
+      userId: "",
+      userName: "",
+    });
+    return { checkLogin, userInfo };
   },
-  persist: true,
-});
+  {
+    persist: true,
+  }
+);

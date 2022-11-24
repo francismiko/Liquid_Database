@@ -78,7 +78,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
           userStore.$patch((state) => {
             state.checkLogin.isLogin = true
             state.userInfo.userName = ruleForm.account
-            state.userInfo.userID = res.data.uid
+            state.userInfo.userId = res.data.uid
             state.userInfo.isAdmin = res.data.isAdmin
           })
           userStore.userInfo.isAdmin ?

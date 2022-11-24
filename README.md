@@ -1,9 +1,9 @@
-# Francismiko_Blog
+# Pseudo_distribution-Database
 
 ## Project setup
 ```
 npm install
-yarn add
+yarn install
 
 ```
 

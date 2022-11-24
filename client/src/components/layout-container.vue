@@ -5,7 +5,7 @@
         <el-header class="header">
           <el-menu :router="false" :default-active="router.currentRoute.value.path" class="el-menu-demo"
             mode="horizontal" :ellipsis="false" @select="handleSelect" text-color="#fff" background-color="#262f3e">
-            <el-menu-item @click="jumpTo(`/${userID}`)" index="home">
+            <el-menu-item @click="jumpTo(`/${userId}`)" index="home">
               <el-icon>
                 <HomeFilled />
               </el-icon>
@@ -121,7 +121,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, inject } from "vue";
+import { inject } from "vue";
 import { useUserStore } from "@/store/user";
 import {
   Document,
@@ -139,9 +139,9 @@ import { useRouter } from "vue-router";
 import { ElMessage, ElMessageBox } from "element-plus";
 
 // 引入store
-const userStore = ref(useUserStore());
-const { isLogin } = { ...userStore.value.checkLogin };
-const { isAdmin, userName, userID } = { ...userStore.value.userInfo };
+const userStore = useUserStore();
+const { isLogin } = { ...userStore.checkLogin };
+const { isAdmin, userName, userId } = { ...userStore.userInfo };
 
 const router = useRouter();
 
@@ -152,13 +152,13 @@ const jumpTo = (path: string) => {
 const reload = inject("reload", Function, true);
 
 // 路由映射
-const userRouterMap = new Map([
-  [1_1, `/${userID}/connection/mysql`],
-  [1_2, `/${userID}/connection/mongodb`],
-  [2, `/${userID}/details`],
-  [3, `/${userID}/logs`],
-  [4, `/${userID}/settings`],
-  [7, `/${userID}/action_logs`],
+const userRouterMap:Map<number,string> = new Map([
+  [1_1, `/${userId}/connection/mysql`],
+  [1_2, `/${userId}/connection/mongodb`],
+  [2, `/${userId}/details`],
+  [3, `/${userId}/logs`],
+  [4, `/${userId}/settings`],
+  [7, `/${userId}/action_logs`],
 ]);
 
 const changeLogin = () => {
@@ -175,7 +175,7 @@ const changeLogin = () => {
       .then(() => {
         router.replace({ path: '/' });
         // 重置全局状态并刷新页面
-        userStore.value.$reset()
+        userStore.$reset()
         reload();
         ElMessage({
           type: 'success',

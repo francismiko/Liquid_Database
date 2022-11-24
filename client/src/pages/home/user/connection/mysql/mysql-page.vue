@@ -69,7 +69,7 @@ const saveConfig = (formEl: FormInstance | undefined) => {
   formEl.validate((valid: any) => {
     if (valid) {
       axios.post('/connection/mysql', {
-        id: userStore.userInfo.userID,
+        id: userStore.userInfo.userId,
         host: ruleForm.host,
         port: ruleForm.port,
         user: ruleForm.user,
