@@ -76,10 +76,14 @@ const submitForm = (formEl: FormInstance | undefined) => {
           router.push({ path: res.data.uid })
           // 更新状态
           userStore.$patch((state) => {
-            state.checkLogin.isLogin = true
-            state.userInfo.userName = ruleForm.account
-            state.userInfo.userId = res.data.uid
-            state.userInfo.isAdmin = res.data.isAdmin
+            state.checkLogin = {
+              isLogin: true
+            }
+            state.userInfo = {
+              userName: ruleForm.account,
+              userId: res.data.uid,
+              isAdmin: res.data.isAdmin
+            }
           })
           userStore.userInfo.isAdmin ?
             ElMessage({

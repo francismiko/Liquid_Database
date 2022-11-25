@@ -16,6 +16,11 @@ export const useUserStore = defineStore(
     return { checkLogin, userInfo };
   },
   {
-    persist: true,
+    persist: {
+      storage: sessionStorage,
+      beforeRestore: (ctx) => {
+        console.log(`about to restore '${ctx.store.$id}'`);
+      },
+    },
   }
 );

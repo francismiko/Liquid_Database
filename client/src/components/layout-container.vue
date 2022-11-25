@@ -121,7 +121,7 @@
 </template>
 
 <script lang="ts" setup>
-import { inject } from "vue";
+import { inject, watch } from "vue";
 import { useUserStore } from "@/store/user";
 import {
   Document,
@@ -152,7 +152,7 @@ const jumpTo = (path: string) => {
 const reload = inject("reload", Function, true);
 
 // 路由映射
-const userRouterMap:Map<number,string> = new Map([
+const userRouterMap: Map<number, string> = new Map([
   [1_1, `/${userId}/connection/mysql`],
   [1_2, `/${userId}/connection/mongodb`],
   [2, `/${userId}/details`],
@@ -173,17 +173,22 @@ const changeLogin = () => {
       }
     )
       .then(() => {
-        router.replace({ path: '/' });
+        // router.replace({ path: '/' });
         // 重置全局状态并刷新页面
-        userStore.$reset()
+        userStore.$reset();
         reload();
-        ElMessage({
-          type: 'success',
-          message: `@${userName}注销成功!`,
-        })
+        isLogin ?
+          ElMessage({
+            type: 'success',
+            message: `@${userName}注销成功!`,
+          }) :
+          ElMessage({
+            type: 'error',
+            message: `注销失败!`,
+          });
       });
   } else {
-    router.push({ path:"/login" });
+    router.push({ path: "/login" });
   }
 };
 
