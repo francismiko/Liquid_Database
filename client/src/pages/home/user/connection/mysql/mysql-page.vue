@@ -68,7 +68,7 @@ const saveConfig = (formEl: FormInstance | undefined) => {
   if (!formEl) return
   formEl.validate((valid: any) => {
     if (valid) {
-      axios.post('/connection/mysql', {
+      axios.post('/connection/mysql/config', {
         id: userStore.userInfo.userId,
         host: ruleForm.host,
         port: ruleForm.port,
@@ -88,6 +88,8 @@ const saveConfig = (formEl: FormInstance | undefined) => {
             message: '配置保存失败！',
             type: 'error',
           })
+          console.log(res.data);
+
         }
       }).catch(err => {
         ElNotification({

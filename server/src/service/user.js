@@ -18,18 +18,18 @@ class UserService {
   }
   // 查找用户名是否存在
   async checkAccount(account) {
-    const user = User.findOne({
+    return User.findOne({
       account: account,
     }).exec();
-    return user // null || object
+    // null || object
   }
   // 查找账号是否存在
   async checkUser(account, password) {
-    const user = User.findOne({
+    return User.findOne({
       account: account,
       password: password,
     }).exec();
-    return user // null || object
+    // null || object
   }
 }
 module.exports = new UserService();

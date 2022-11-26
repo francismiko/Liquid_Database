@@ -4,7 +4,7 @@ class UserController {
   async register(ctx, next) {
     const { account, password } = ctx.request.body
     const user = await User.checkAccount(account)
-    if (user === null) {
+    if (!user) {
       await User.createUser(account, password)
       ctx.body = {
         code: 200,
@@ -22,7 +22,7 @@ class UserController {
   async login(ctx, next) {
     const { account, password, isAdmin } = ctx.request.body
     const user = await User.checkUser(account, password, isAdmin)
-    if (user !== null) {
+    if (user) {
       ctx.body = {
         code: 200,
         msg: '登录成功',

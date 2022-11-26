@@ -16,9 +16,11 @@ class ConnectionService {
     }, { new: true }, (err, data) => {
       if (err) {
         console.log(err);
+        return false;
       } else if (data) {
         console.log('mysql配置更新成功');
         console.log(data);
+        return true;
       } else if (data === null) {
         mysqlConfig.create({
           uid: id,
@@ -30,9 +32,11 @@ class ConnectionService {
         }, (err, data) => {
           if (err) {
             console.log(err);
+            return false;
           } else {
             console.log('mysql配置新建成功');
             console.log(data);
+            return true;
           }
         });
       }
