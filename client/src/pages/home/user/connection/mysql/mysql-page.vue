@@ -75,7 +75,7 @@ const saveConfig = (formEl: FormInstance | undefined) => {
         user: ruleForm.user,
         password: ruleForm.password,
         database: ruleForm.database,
-      }).then(res => {        
+      }).then(res => {
         if (res.data.code === 200) {
           ElNotification({
             title: 'Success',

@@ -16,7 +16,6 @@ class ConnectionService {
     }, { new: true }, (err, data) => {
       if (err) {
         console.log(err);
-        return;
       } else if (data) {
         console.log('mysql配置更新成功');
         console.log(data);
@@ -31,7 +30,6 @@ class ConnectionService {
         }, (err, data) => {
           if (err) {
             console.log(err);
-            return;
           } else {
             console.log('mysql配置新建成功');
             console.log(data);

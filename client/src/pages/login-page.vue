@@ -105,7 +105,6 @@ const submitForm = (formEl: FormInstance | undefined) => {
           message: `${err}`,
           type: 'error'
         })
-        console.error(err);
       })
     } else {
       return false

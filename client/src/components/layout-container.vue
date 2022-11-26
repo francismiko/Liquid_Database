@@ -179,12 +179,12 @@ const changeLogin = () => {
         reload();
         isLogin ?
           ElMessage({
-            type: 'success',
-            message: `@${userName}注销成功!`,
-          }) :
-          ElMessage({
             type: 'error',
             message: `注销失败!`,
+          }) :
+          ElMessage({
+            type: 'success',
+            message: `@${userName}注销成功!`,
           });
       });
   } else {

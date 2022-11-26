@@ -1,14 +1,14 @@
 import { defineStore } from "pinia";
-import { ref } from "vue";
+import { ref, reactive } from "vue";
 
 export const useUserStore = defineStore(
   "user",
   () => {
-    const checkLogin = ref({
+    const checkLogin = reactive({
       isLogin: false,
     });
 
-    const userInfo = ref({
+    const userInfo = reactive({
       isAdmin: false,
       userId: "",
       userName: "",
@@ -16,11 +16,6 @@ export const useUserStore = defineStore(
     return { checkLogin, userInfo };
   },
   {
-    persist: {
-      storage: sessionStorage,
-      beforeRestore: (ctx) => {
-        console.log(`about to restore '${ctx.store.$id}'`);
-      },
-    },
+    persist: true,
   }
 );
