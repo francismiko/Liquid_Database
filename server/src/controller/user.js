@@ -10,7 +10,6 @@ class UserController {
         code: 200,
         msg: '注册成功',
       }
-
     } else {
       ctx.body = {
         code: 400,
@@ -34,6 +33,15 @@ class UserController {
         code: 400,
         msg: '登录失败',
       }
+    }
+  }
+
+  async recordAction(ctx, next) {
+    const { uid, account, action, date } = ctx.request.body
+    await User.recordAction(uid, account, action, date)
+    ctx.body = {
+      code: 200,
+      msg: '记录成功'
     }
   }
 }

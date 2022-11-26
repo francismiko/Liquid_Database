@@ -9,6 +9,6 @@ var mysqlSchema = new mongoose.Schema({
   mysql_database: { type: String },
 }, { versionKey: false });
 
-var mysqlConfig = mongoose.model('mysql_config', mysqlSchema)
+var mysqlConfig = mongoose.model('mysql_configs', mysqlSchema)
 
 module.exports = mysqlConfig;

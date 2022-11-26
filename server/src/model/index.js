@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const config = require('../config');
 
+//连接mongodb
 mongoose.connect(config.url)
   .then(() => console.log(`MongoDB connecting with ${config.url}`))
   .catch(err => console.error('Connecting error:', err));

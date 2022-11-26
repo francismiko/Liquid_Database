@@ -7,6 +7,6 @@ var UserSchema = new mongoose.Schema({
   isAdmin: { type: Boolean, default: false },
 }, { versionKey: false })
 
-var User = mongoose.model('user', UserSchema)
+var User = mongoose.model('users', UserSchema)
 
 module.exports = User;

@@ -1,4 +1,5 @@
 const User = require('../model/user');
+const UserActions = require('../model/userActions')
 
 class UserService {
   // 创建新用户
@@ -30,6 +31,23 @@ class UserService {
       password: password,
     }).exec();
     // null || object
+  }
+  // 记录用户行为
+  async recordAction(uid, account, action, date) {
+    UserActions.create({
+      uid: uid,
+      account: account,
+      action: action,
+      date: date
+    }, (err, data) => {
+      if (err) {
+        console.log(err);
+        return;
+      } else {
+        console.log('用户行为记录成功');
+        console.log(data);
+      }
+    });
   }
 }
 module.exports = new UserService();
