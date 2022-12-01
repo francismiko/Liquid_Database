@@ -106,6 +106,12 @@ const submitForm = (formEl: FormInstance | undefined) => {
           type: 'error'
         })
       })
+      axios.post('/user/actions', {
+        account: userStore.userInfo.userName,
+        action_type: '登录',
+        action_content: '登录成功',
+        action_date: new Date(),
+      })
     } else {
       return false
     }

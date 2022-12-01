@@ -37,8 +37,8 @@ class UserController {
   }
 
   async recordAction(ctx, next) {
-    const { uid, account, action, date } = ctx.request.body
-    await User.recordAction(uid, account, action, date)
+    const { uid, account, action_type, action_content, action_date } = ctx.request.body
+    await User.recordAction(uid, account, action_type, action_content, action_date)
     ctx.body = {
       code: 200,
       msg: '记录成功'

@@ -33,12 +33,13 @@ class UserService {
     // null || object
   }
   // 记录用户行为
-  async recordAction(uid, account, action, date) {
+  async recordAction(uid, account, action_type, action_content, action_date) {
     UserActions.create({
       uid: uid,
       account: account,
-      action: action,
-      date: date
+      action_type: action_type,
+      action_content: action_content,
+      action_date: action_date,
     }, (err, data) => {
       if (err) {
         console.log(err);
