@@ -1,26 +1,29 @@
 # Pseudo_distribution-Database
 
-## Project setup
-```
+## 基于Vue3, koa的伪分布式数据库管理站点
+
+### /server & /client 安装依赖
+```shell
 npm install
 yarn install
-
 ```
 
-### Compiles and hot-reloads for development
-```
+### /server & /client 运行开发环境
+```shell
 npm run dev
 yarn dev
 ```
 
-### Compiles and minifies for production
-```
+### /server & /client 项目打包
+```shell
 npm run build
+yarn build
 ```
 
 ### Lints and fixes files
-```
+```shell
 npm run lint
+yarn lint
 ```
 
 ### Customize configuration
