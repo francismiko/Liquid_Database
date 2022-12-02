@@ -22,7 +22,7 @@ yarn build
 
 ### Lints and fixes files
 ```shell
-npm run lint
+npm run lint 
 yarn lint
 ```
 
