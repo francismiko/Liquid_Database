@@ -86,25 +86,13 @@ const submitForm = (formEl: FormInstance | undefined) => {
             }
           })
           userStore.userInfo.isAdmin ?
-            ElMessage({
-              message: `登录成功！管理员：<${ruleForm.account}>，欢迎回来！`,
-              type: 'success'
-            }) :
-            ElMessage({
-              message: `登录成功！用户：<${ruleForm.account}>，欢迎回来！`,
-              type: 'success'
-            })
+            ElMessage.success(`登录成功！管理员：<${ruleForm.account}>，欢迎回来！`) :
+            ElMessage.success(`登录成功！用户：<${ruleForm.account}>，欢迎回来！`)
         } else {
-          ElMessage({
-            message: '登录失败！',
-            type: 'error'
-          })
+          ElMessage.error('登录失败！')
         }
       }).catch(err => {
-        ElMessage({
-          message: `${err}`,
-          type: 'error'
-        })
+        ElMessage.error(err)
       })
       axios.post('/user/actions', {
         account: userStore.userInfo.userName,

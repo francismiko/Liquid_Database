@@ -15,15 +15,21 @@
 import { ref, onMounted } from 'vue'
 import item from '@/components/item-container.vue'
 import axios from '@/utils/axios';
+import { ElMessage } from 'element-plus';
 let tableData = ref<Array<object>>([])
 
 onMounted(() => {
-  axios.get('/user/actions').then(res => {
-    if (res.data.code === 200) {
-      tableData.value = res.data.actions
-      console.log(tableData)
-    }
-  })
+  axios.get('/user/actions')
+    .then(res => {
+      if (res.data.code === 200) {
+        tableData.value = res.data.actions
+        ElMessage.success('已获取最新数据')
+      } else {
+        ElMessage.error('服务器出现异常，请联系管理员')
+      }
+    }).catch(err => {
+      ElMessage.error(err)
+    })
 })
 </script >
 

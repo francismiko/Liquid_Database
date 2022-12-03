@@ -84,26 +84,16 @@ const submitForm = (formEl: FormInstance | undefined) => {
         password: ruleForm.pass
       }).then(res => {
         if (res.data.code === 200) {
-          ElMessage({
-            message: '注册成功！',
-            type: 'success'
-          })
+          ElMessage.success('注册成功！')
           router.push({ path: '/login' })
         } else {
-          ElMessage({
-            message: '注册失败！',
-            type: 'error'
-          })
+          ElMessage.error('注册失败！')
         }
       }).catch(err => {
-        ElMessage({
-          message: `${err}`,
-          type: 'error'
-        })
+        ElMessage.error(err)
         console.error(err);
       })
     } else {
-      console.log('error submit!')
       return false
     }
   })
