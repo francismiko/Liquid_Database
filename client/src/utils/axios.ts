@@ -7,6 +7,7 @@ type Result<T> = {
   msg: string;
   uid: string;
   isAdmin: boolean;
+  actions: Array<object>;
   result: T;
 };
 

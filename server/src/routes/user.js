@@ -8,5 +8,6 @@ const userRouter = new Router({ prefix: '/user' });
 userRouter.post('/register', User.register);
 userRouter.post('/login', User.login);
 userRouter.post('/actions', User.recordAction);
+userRouter.get('/actions', User.getActions);
 
 module.exports = userRouter;

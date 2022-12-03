@@ -1,7 +1,6 @@
 const mongoose = require('./index');
 
 var UserActionsSchema = new mongoose.Schema({
-  uid: { type: String },
   account: { type: String },
   action_type: { type: String },
   action_content: { type: String },

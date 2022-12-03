@@ -33,9 +33,8 @@ class UserService {
     // null || object
   }
   // 记录用户行为
-  async recordAction(uid, account, action_type, action_content, action_date) {
+  async recordAction(account, action_type, action_content, action_date) {
     UserActions.create({
-      uid: uid,
       account: account,
       action_type: action_type,
       action_content: action_content,
@@ -49,6 +48,11 @@ class UserService {
         console.log(data);
       }
     });
+  }
+
+  // 获取用户行为
+  async getActions() {
+    return UserActions.find().exec();
   }
 }
 module.exports = new UserService();
