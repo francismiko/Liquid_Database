@@ -28,6 +28,7 @@ import { ElMessage, FormInstance } from 'element-plus'
 import { useRouter } from 'vue-router';
 import axios from '@/utils/axios';
 import { useUserStore } from '@/store/user';
+import axiosRequest from '@/utils/request';
 
 const router = useRouter()
 
@@ -37,6 +38,17 @@ const userStore = useUserStore();
 const ruleFormRef = ref<FormInstance>()
 
 const labelPosition = ref('left')
+
+const loginAction = {
+  account: userStore.userInfo.userName,
+  type: '登录',
+  content: '登录成功',
+}
+
+const ruleForm = reactive({
+  account: '',
+  pass: ''
+})
 
 // 校验账号
 const validateAccount = (rule: any, value: any, callback: any) => {
@@ -54,11 +66,6 @@ const validatePass = (rule: any, value: any, callback: any) => {
   callback()
 }
 
-const ruleForm = reactive({
-  account: '',
-  pass: ''
-})
-
 const rules = reactive({
   pass: [{ validator: validatePass, trigger: 'blur' }],
   account: [{ validator: validateAccount, trigger: 'blur' }]
@@ -68,38 +75,8 @@ const submitForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return
   formEl.validate((valid) => {
     if (valid) {
-      axios.post('/user/login', {
-        account: ruleForm.account,
-        password: ruleForm.pass
-      }).then(res => {
-        if (res.data.code === 200) {
-          router.push({ path: res.data.uid })
-          // 更新状态
-          userStore.$patch((state) => {
-            state.checkLogin = {
-              isLogin: true
-            }
-            state.userInfo = {
-              userName: ruleForm.account,
-              userId: res.data.uid,
-              isAdmin: res.data.isAdmin
-            }
-          })
-          userStore.userInfo.isAdmin ?
-            ElMessage.success(`登录成功！管理员：<${ruleForm.account}>，欢迎回来！`) :
-            ElMessage.success(`登录成功！用户：<${ruleForm.account}>，欢迎回来！`)
-        } else {
-          ElMessage.error('登录失败！')
-        }
-      }).catch(err => {
-        ElMessage.error(err)
-      })
-      axios.post('/user/actions', {
-        account: userStore.userInfo.userName,
-        action_type: '登录',
-        action_content: '登录成功',
-        action_date: new Date(),
-      })
+      tologin();
+      axiosRequest.postActions(loginAction)
     } else {
       return false
     }
@@ -109,6 +86,35 @@ const submitForm = (formEl: FormInstance | undefined) => {
 const resetForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return
   formEl.resetFields()
+}
+
+const tologin = () => {
+  axios.post('/user/login', {
+    account: ruleForm.account,
+    password: ruleForm.pass
+  }).then(res => {
+    if (res.data.code === 200) {
+      router.push({ path: res.data.uid })
+      // 更新状态
+      userStore.$patch((state) => {
+        state.checkLogin = {
+          isLogin: true
+        }
+        state.userInfo = {
+          userName: ruleForm.account,
+          userId: res.data.uid,
+          isAdmin: res.data.isAdmin
+        }
+      })
+      userStore.userInfo.isAdmin ?
+        ElMessage.success(`登录成功！管理员：<${ruleForm.account}>，欢迎回来！`) :
+        ElMessage.success(`登录成功！用户：<${ruleForm.account}>，欢迎回来！`)
+    } else {
+      ElMessage.error('登录失败！')
+    }
+  }).catch(err => {
+    ElMessage.error(err)
+  })
 }
 </script >
 

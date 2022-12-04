@@ -68,42 +68,43 @@ const saveConfig = (formEl: FormInstance | undefined) => {
   if (!formEl) return
   formEl.validate((valid: any) => {
     if (valid) {
-      axios.post('/connection/mysql/config', {
-        id: userStore.userInfo.userId,
-        host: ruleForm.host,
-        port: ruleForm.port,
-        user: ruleForm.user,
-        password: ruleForm.password,
-        database: ruleForm.database,
-      }).then(res => {
-        if (res.data.code === 200) {
-          ElNotification({
-            title: 'Success',
-            message: '配置保存成功！',
-            type: 'success',
-          })
-        } else {
-          ElNotification({
-            title: 'Error',
-            message: '配置保存失败！',
-            type: 'error',
-          })
-          console.log(res.data);
-
-        }
-      }).catch(err => {
-        ElNotification({
-          title: 'Error',
-          message: `${err}`,
-          type: 'error',
-        })
-      })
+      toSaveConfig();
     } else {
       return false
     }
   })
 }
 
+const toSaveConfig = () => {
+  axios.post('/connection/mysql/config', {
+    id: userStore.userInfo.userId,
+    host: ruleForm.host,
+    port: ruleForm.port,
+    user: ruleForm.user,
+    password: ruleForm.password,
+    database: ruleForm.database,
+  }).then(res => {
+    if (res.data.code === 200) {
+      ElNotification({
+        title: 'Success',
+        message: '配置保存成功！',
+        type: 'success',
+      })
+    } else {
+      ElNotification({
+        title: 'Error',
+        message: '配置保存失败！',
+        type: 'error',
+      })
+    }
+  }).catch(err => {
+    ElNotification({
+      title: 'Error',
+      message: `${err}`,
+      type: 'error',
+    })
+  })
+}
 </script >
 
 <style lang="scss" scoped>

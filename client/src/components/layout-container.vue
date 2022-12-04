@@ -178,14 +178,8 @@ const changeLogin = () => {
         userStore.$reset();
         reload();
         isLogin ?
-          ElMessage({
-            type: 'error',
-            message: `注销失败!`,
-          }) :
-          ElMessage({
-            type: 'success',
-            message: `@${userName}注销成功!`,
-          });
+          ElMessage.error(`注销失败!`) :
+          ElMessage.success(`@${userName}注销成功!`);
       });
   } else {
     router.push({ path: "/login" });

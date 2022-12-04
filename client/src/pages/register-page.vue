@@ -79,20 +79,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return
   formEl.validate((valid) => {
     if (valid) {
-      axios.post('/user/register', {
-        account: ruleForm.account,
-        password: ruleForm.pass
-      }).then(res => {
-        if (res.data.code === 200) {
-          ElMessage.success('注册成功！')
-          router.push({ path: '/login' })
-        } else {
-          ElMessage.error('注册失败！')
-        }
-      }).catch(err => {
-        ElMessage.error(err)
-        console.error(err);
-      })
+      toRegister();
     } else {
       return false
     }
@@ -102,6 +89,23 @@ const submitForm = (formEl: FormInstance | undefined) => {
 const resetForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return
   formEl.resetFields()
+}
+
+const toRegister = () => {
+  axios.post('/user/register', {
+    account: ruleForm.account,
+    password: ruleForm.pass
+  }).then(res => {
+    if (res.data.code === 200) {
+      ElMessage.success('注册成功！')
+      router.push({ path: '/login' })
+    } else {
+      ElMessage.error('注册失败！')
+    }
+  }).catch(err => {
+    ElMessage.error(err)
+    console.error(err);
+  })
 }
 </script >
 
