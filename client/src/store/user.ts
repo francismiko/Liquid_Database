@@ -4,15 +4,16 @@ import { ref, reactive } from "vue";
 export const useUserStore = defineStore(
   "user",
   () => {
-    const checkLogin = reactive({
+    const checkLogin = ref({
       isLogin: false,
     });
 
-    const userInfo = reactive({
+    const userInfo = ref({
       isAdmin: false,
       userId: "",
       userName: "",
     });
+
     return { checkLogin, userInfo };
   },
   {

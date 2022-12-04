@@ -39,12 +39,6 @@ const ruleFormRef = ref<FormInstance>()
 
 const labelPosition = ref('left')
 
-const loginAction = {
-  account: userStore.userInfo.userName,
-  type: '登录',
-  content: '登录成功',
-}
-
 const ruleForm = reactive({
   account: '',
   pass: ''
@@ -75,8 +69,8 @@ const submitForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return
   formEl.validate((valid) => {
     if (valid) {
+      // 登录请求
       tologin();
-      axiosRequest.postActions(loginAction)
     } else {
       return false
     }
@@ -94,7 +88,13 @@ const tologin = () => {
     password: ruleForm.pass
   }).then(res => {
     if (res.data.code === 200) {
-      router.push({ path: res.data.uid })
+      let loginAction = {
+        account: ruleForm.account,
+        type: '登录',
+        content: '登录成功',
+      }
+      // 发送行为日志
+      axiosRequest.postActions(loginAction);
       // 更新状态
       userStore.$patch((state) => {
         state.checkLogin = {
@@ -106,6 +106,7 @@ const tologin = () => {
           isAdmin: res.data.isAdmin
         }
       })
+      router.push({ path: res.data.uid })
       userStore.userInfo.isAdmin ?
         ElMessage.success(`登录成功！管理员：<${ruleForm.account}>，欢迎回来！`) :
         ElMessage.success(`登录成功！用户：<${ruleForm.account}>，欢迎回来！`)

@@ -35,9 +35,16 @@ import { ElNotification, FormInstance } from 'element-plus';
 import { reactive, ref } from 'vue';
 import { useUserStore } from '@/store/user';
 import axios from '@/utils/axios';
+import axiosRequest from '@/utils/request';
 
 // 引入store
 const userStore = useUserStore();
+
+// const saveConfigAction {
+//   account: userStore.userInfo.userName,
+//   type: '保存配置',
+//   content: '保存配置成功',
+// }
 
 const ruleFormRef = ref<FormInstance>()
 

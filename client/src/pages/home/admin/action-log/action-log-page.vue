@@ -19,6 +19,10 @@ import { ElMessage } from 'element-plus';
 let tableData = ref<Array<object>>([])
 
 onMounted(() => {
+  getActionLogs()
+})
+
+const getActionLogs = () => {
   axios.get('/user/actions')
     .then(res => {
       if (res.data.code === 200) {
@@ -30,7 +34,7 @@ onMounted(() => {
     }).catch(err => {
       ElMessage.error(err)
     })
-})
+}
 </script >
 
 <style lang="scss" scoped>
