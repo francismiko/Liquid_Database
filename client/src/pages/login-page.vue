@@ -88,6 +88,9 @@ const tologin = () => {
     password: ruleForm.pass
   }).then(res => {
     if (res.data.code === 200) {
+      /** 
+       * @TODO 封装接口 
+       */
       let loginAction = {
         account: ruleForm.account,
         type: '登录',

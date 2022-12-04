@@ -40,12 +40,6 @@ import axiosRequest from '@/utils/request';
 // 引入store
 const userStore = useUserStore();
 
-// const saveConfigAction {
-//   account: userStore.userInfo.userName,
-//   type: '保存配置',
-//   content: '保存配置成功',
-// }
-
 const ruleFormRef = ref<FormInstance>()
 
 const validate = (rule: any, value: any, callback: any) => {
@@ -81,7 +75,9 @@ const saveConfig = (formEl: FormInstance | undefined) => {
     }
   })
 }
-
+/**
+ * @TODO 保存配置行为
+ */
 const toSaveConfig = () => {
   axios.post('/connection/mysql/config', {
     id: userStore.userInfo.userId,

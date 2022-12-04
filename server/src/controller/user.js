@@ -38,6 +38,9 @@ class UserController {
 
   async recordAction(ctx, next) {
     const { account, action_type, action_content, action_date } = ctx.request.body
+    /** 
+     * @TODO 需要对异步结果进行校验 
+     */
     await User.recordAction(account, action_type, action_content, action_date)
     ctx.body = {
       code: 200,
@@ -52,6 +55,11 @@ class UserController {
         code: 200,
         msg: '获取成功',
         actions: actions,
+      }
+    } else {
+      ctx.body = {
+        code: 400,
+        msg: '获取失败',
       }
     }
   }

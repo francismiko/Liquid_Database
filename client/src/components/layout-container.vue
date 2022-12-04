@@ -145,6 +145,9 @@ const { isAdmin, userName, userId } = { ...userStore.userInfo };
 
 const router = useRouter();
 
+/**
+ * @TODO 用:index替换路由跳转函数
+ */
 const jumpTo = (path: string) => {
   router.push({ path: `${path}` });
 };
@@ -172,6 +175,9 @@ const changeLogin = () => {
         type: 'warning',
       }
     )
+      /**
+       * @FIXME pinia持久化reset无效
+      */
       .then(() => {
         // router.replace({ path: '/' });
         // 重置全局状态并刷新页面
