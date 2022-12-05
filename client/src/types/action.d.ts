@@ -3,3 +3,10 @@ export declare interface Action {
   type: string;
   content: string;
 }
+
+export declare interface Exception {
+  account: string;
+  type: string;
+  code: number;
+  content: string;
+}

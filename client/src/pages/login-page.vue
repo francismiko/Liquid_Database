@@ -88,7 +88,6 @@ const tologin = () => {
     password: ruleForm.pass
   }).then(res => {
     if (res.data.code === 200) {
-      // 发送行为日志
       axiosRequest.postActions({
         account: ruleForm.account,
         type: '登录',
@@ -105,14 +104,27 @@ const tologin = () => {
           isAdmin: res.data.isAdmin
         }
       })
+      // 路由跳转
       router.push({ path: res.data.uid })
       userStore.userInfo.isAdmin ?
         ElMessage.success(`登录成功！管理员：<${ruleForm.account}>，欢迎回来！`) :
         ElMessage.success(`登录成功！用户：<${ruleForm.account}>，欢迎回来！`)
     } else {
+      axiosRequest.postException({
+        account: userStore.userInfo.userName,
+        type: '登录',
+        code: res.data.code,
+        content: '登录失败',
+      })
       ElMessage.error('登录失败！')
     }
   }).catch(err => {
+    axiosRequest.postException({
+      account: userStore.userInfo.userName,
+      type: '登录',
+      code: err.response.status,
+      content: `${err}`,
+    })
     ElMessage.error(err)
   })
 }

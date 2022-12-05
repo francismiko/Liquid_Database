@@ -100,6 +100,12 @@ const toSaveConfig = () => {
           type: 'success',
         })
       } else {
+        axiosRequest.postException({
+          account: userStore.userInfo.userName,
+          type: '修改配置',
+          code: res.data.code,
+          content: '修改配置失败',
+        })
         ElNotification({
           title: 'Error',
           message: '配置保存失败！',
@@ -107,6 +113,12 @@ const toSaveConfig = () => {
         })
       }
     }).catch(err => {
+      axiosRequest.postException({
+        account: userStore.userInfo.userName,
+        type: '修改配置',
+        code: err.response.status,
+        content: `${err}`,
+      })
       ElNotification({
         title: 'Error',
         message: `${err}`,
