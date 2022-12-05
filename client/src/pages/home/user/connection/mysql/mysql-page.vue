@@ -34,6 +34,7 @@ import item from '@/components/item-container.vue'
 import { ElNotification, FormInstance } from 'element-plus';
 import { reactive, ref } from 'vue';
 import { useUserStore } from '@/store/user';
+import { MysqlConfiguration } from '@/types/configuration';
 import axios from '@/utils/axios';
 import axiosRequest from '@/utils/request';
 
@@ -75,38 +76,43 @@ const saveConfig = (formEl: FormInstance | undefined) => {
     }
   })
 }
-/**
- * @TODO 保存配置行为
- */
+
 const toSaveConfig = () => {
-  axios.post('/connection/mysql/config', {
+  const config: MysqlConfiguration = {
     id: userStore.userInfo.userId,
     host: ruleForm.host,
     port: ruleForm.port,
     user: ruleForm.user,
     password: ruleForm.password,
     database: ruleForm.database,
-  }).then(res => {
-    if (res.data.code === 200) {
-      ElNotification({
-        title: 'Success',
-        message: '配置保存成功！',
-        type: 'success',
-      })
-    } else {
+  }
+  axios.post('/connection/mysql/config', config)
+    .then(res => {
+      if (res.data.code === 200) {
+        axiosRequest.postActions({
+          account: userStore.userInfo.userName,
+          type: '修改配置',
+          content: `修改配置为,地址:${config.host},端口:${config.port},用户名:${config.user},密码:${config.password},数据库:${config.database}`,
+        })
+        ElNotification({
+          title: 'Success',
+          message: '配置保存成功！',
+          type: 'success',
+        })
+      } else {
+        ElNotification({
+          title: 'Error',
+          message: '配置保存失败！',
+          type: 'error',
+        })
+      }
+    }).catch(err => {
       ElNotification({
         title: 'Error',
-        message: '配置保存失败！',
+        message: `${err}`,
         type: 'error',
       })
-    }
-  }).catch(err => {
-    ElNotification({
-      title: 'Error',
-      message: `${err}`,
-      type: 'error',
     })
-  })
 }
 </script >
 

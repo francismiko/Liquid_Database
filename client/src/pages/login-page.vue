@@ -88,16 +88,12 @@ const tologin = () => {
     password: ruleForm.pass
   }).then(res => {
     if (res.data.code === 200) {
-      /** 
-       * @TODO 封装接口 
-       */
-      let loginAction = {
+      // 发送行为日志
+      axiosRequest.postActions({
         account: ruleForm.account,
         type: '登录',
         content: '登录成功',
-      }
-      // 发送行为日志
-      axiosRequest.postActions(loginAction);
+      });
       // 更新状态
       userStore.$patch((state) => {
         state.checkLogin = {

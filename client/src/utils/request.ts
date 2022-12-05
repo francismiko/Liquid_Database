@@ -1,7 +1,8 @@
+import { Action } from "@/types/action";
 import axios from "./axios";
 
 class axiosRequest {
-  postActions = (action: Action) => {
+  public postActions = (action: Action) => {
     axios.post("/user/actions", {
       account: action.account,
       action_type: action.type,
