@@ -9,5 +9,7 @@ userRouter.post('/register', User.register);
 userRouter.post('/login', User.login);
 userRouter.post('/actions', User.recordAction);
 userRouter.get('/actions', User.getActions);
+userRouter.post('/exceptions', User.recordException);
+userRouter.get('/exceptions', User.getExceptions);
 
 module.exports = userRouter;

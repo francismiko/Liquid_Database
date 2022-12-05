@@ -4,19 +4,19 @@ const router = createRouter({
   routes: [
     {
       path: "/",
-      component: () => import("@/pages/index-page.vue"),
+      component: () => import("@/pages/index/index-page.vue"),
     },
     {
       path: "/login",
-      component: () => import("@/pages/login-page.vue"),
+      component: () => import("@/pages/index/login-page.vue"),
     },
     {
       path: "/register",
-      component: () => import("@/pages/register-page.vue"),
+      component: () => import("@/pages/index/register-page.vue"),
     },
     {
       path: "/:id",
-      component: () => import("@/pages/home/home-page.vue"),
+      component: () => import("@/components/layout-container.vue"),
       children: [
         {
           path: "connection",
@@ -47,7 +47,8 @@ const router = createRouter({
         },
         {
           path: "action_logs",
-          component: () => import("@/pages/home/admin/action-log/action-log-page.vue"),
+          component: () =>
+            import("@/pages/home/admin/action-log/action-log-page.vue"),
         },
       ],
     },

@@ -48,6 +48,18 @@ class UserController {
     }
   }
 
+  async recordException(ctx, next) {
+    const { account, exception_type, exception_code, exception_content, exception_date } = ctx.request.body
+    /**
+     * @TODO 需要对异步结果进行校验
+     */
+    await User.recordException(account, exception_type, exception_code, exception_content, exception_date)
+    ctx.body = {
+      code: 200,
+      msg: '记录成功'
+    }
+  }
+
   async getActions(ctx, next) {
     const actions = await User.getActions()
     if (actions) {
@@ -55,6 +67,22 @@ class UserController {
         code: 200,
         msg: '获取成功',
         actions: actions,
+      }
+    } else {
+      ctx.body = {
+        code: 400,
+        msg: '获取失败',
+      }
+    }
+  }
+
+  async getExceptions(ctx, next) {
+    const exceptions = await User.getExceptions()
+    if (exceptions) {
+      ctx.body = {
+        code: 200,
+        msg: '获取成功',
+        exceptions: exceptions,
       }
     } else {
       ctx.body = {
