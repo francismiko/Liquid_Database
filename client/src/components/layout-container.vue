@@ -121,7 +121,7 @@
 </template>
 
 <script lang="ts" setup>
-import { inject, watch } from "vue";
+import { inject } from "vue";
 import { useUserStore } from "@/store/user";
 import {
   Document,

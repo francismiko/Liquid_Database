@@ -31,15 +31,17 @@
 
 <script lang="ts" setup>
 import item from '@/components/item-container.vue'
-import { ElNotification, FormInstance } from 'element-plus';
+import { ElMessage, ElNotification, FormInstance } from 'element-plus';
 import { onMounted, reactive, ref } from 'vue';
 import { useUserStore } from '@/store/user';
 import { MysqlConfiguration } from '@/types/configuration';
 import axios from '@/utils/axios';
 import axiosRequest from '@/utils/request';
+import { useMysqlStore } from '@/store/mysql';
 
 // 引入store
 const userStore = useUserStore();
+const mysqlStore = useMysqlStore();
 
 const ruleFormRef = ref<FormInstance>()
 
@@ -50,7 +52,7 @@ const validate = (rule: any, value: any, callback: any) => {
   callback()
 }
 
-const ruleForm = reactive({
+let ruleForm = reactive({
   host: '',
   port: '',
   user: '',
@@ -67,22 +69,8 @@ const rules = reactive({
 })
 
 onMounted(() => {
-  getActionLogs()
+  getMysqlConfig();
 })
-
-const getActionLogs = () => {
-  axios.get('/connection/mysql/config')
-    .then(res => {
-      if (res.data.code === 200) {
-        tableData.value = res.data.actions
-        ElMessage.success('已获取最新数据')
-      } else {
-        ElMessage.error('服务器出现异常，请联系管理员')
-      }
-    }).catch(err => {
-      ElMessage.error(err)
-    })
-}
 
 const saveConfig = (formEl: FormInstance | undefined) => {
   if (!formEl) return
@@ -142,6 +130,38 @@ const toSaveConfig = () => {
         message: `${err}`,
         type: 'error',
       })
+    })
+}
+
+const getMysqlConfig = () => {
+  axios.get(`/connection/mysql/config/${userStore.userInfo.userId}`)
+    .then(res => {
+      console.log(res.data);
+      if (res.data.code === 200) {
+        // 更新store
+        mysqlStore.$patch((state) => {
+          state.mysqlConfig = {
+            mysql_host: res.data.mysql_host,
+            mysql_port: res.data.mysql_port,
+            mysql_user: res.data.mysql_user,
+            mysql_password: res.data.mysql_password,
+            mysql_database: res.data.mysql_database,
+          }
+        })
+        ruleForm = Object.assign(ruleForm, {
+          host: res.data.mysql_host,
+          port: res.data.mysql_port,
+          user: res.data.mysql_user,
+          password: res.data.mysql_password,
+          database: res.data.mysql_database,
+        })
+        console.log(mysqlStore.mysqlConfig);
+        ElMessage.success('已获取最新数据')
+      } else {
+        ElMessage.error('服务器出现异常，请联系管理员')
+      }
+    }).catch(err => {
+      ElMessage.error(err)
     })
 }
 </script >

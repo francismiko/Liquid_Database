@@ -1,4 +1,4 @@
-const mysqlConfig = require('../model/mysqlConfiguration');
+const mysqlConfig = require('../model/mysqlConfig');
 
 class ConnectionService {
   // 保存mysql配置
@@ -41,6 +41,13 @@ class ConnectionService {
         });
       }
     });
+  }
+
+  // 获取mysql配置
+  async getMysqlConfig(uid) {
+    return mysqlConfig.findOne({
+      uid: uid
+    }).exec();
   }
 }
 module.exports = new ConnectionService();

@@ -8,6 +8,11 @@ type Result<T> = {
   uid: string;
   isAdmin: boolean;
   actions: Array<object>;
+  mysql_host: string;
+  mysql_port: string;
+  mysql_user: string;
+  mysql_password: string;
+  mysql_database: string;
   result: T;
 };
 
