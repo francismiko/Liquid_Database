@@ -1,8 +1,9 @@
 <template>
   <div>
     <item>
-      <el-table :data="tableData" stripe style="width: 100%">
-        <el-table-column prop="action_date" label="日期" />
+      <el-table :data="tableData" :default-sort="{ prop: 'action_date', order: 'descending' }" stripe
+        style="width: auto">
+        <el-table-column prop="action_date" label="日期" sortable />
         <el-table-column prop="account" label="用户名" />
         <el-table-column prop="action_type" label="行为类型" />
         <el-table-column prop="action_content" label="行为内容" />

@@ -32,7 +32,7 @@
 <script lang="ts" setup>
 import item from '@/components/item-container.vue'
 import { ElNotification, FormInstance } from 'element-plus';
-import { reactive, ref } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 import { useUserStore } from '@/store/user';
 import { MysqlConfiguration } from '@/types/configuration';
 import axios from '@/utils/axios';
@@ -65,6 +65,24 @@ const rules = reactive({
   password: [{ validator: validate, trigger: 'blur' }],
   database: [{ validator: validate, trigger: 'blur' }],
 })
+
+onMounted(() => {
+  getActionLogs()
+})
+
+const getActionLogs = () => {
+  axios.get('/connection/mysql/config')
+    .then(res => {
+      if (res.data.code === 200) {
+        tableData.value = res.data.actions
+        ElMessage.success('已获取最新数据')
+      } else {
+        ElMessage.error('服务器出现异常，请联系管理员')
+      }
+    }).catch(err => {
+      ElMessage.error(err)
+    })
+}
 
 const saveConfig = (formEl: FormInstance | undefined) => {
   if (!formEl) return

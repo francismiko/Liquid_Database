@@ -1,4 +1,4 @@
-const mysqlConfig = require('../model/mysql');
+const mysqlConfig = require('../model/mysqlConfiguration');
 
 class ConnectionService {
   // 保存mysql配置
