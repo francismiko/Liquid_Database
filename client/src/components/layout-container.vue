@@ -102,7 +102,7 @@
                   </el-icon>
                   <span>用户行为日志</span>
                 </el-menu-item>
-                <el-menu-item v-if="isAdmin">
+                <el-menu-item :index="userRouterMap.get(8)" v-if="isAdmin">
                   <el-icon>
                     <Failed />
                   </el-icon>
@@ -162,6 +162,7 @@ const userRouterMap: Map<number, string> = new Map([
   [3, `/${userId}/logs`],
   [4, `/${userId}/settings`],
   [7, `/${userId}/action_logs`],
+  [8, `/${userId}/exception_logs`],
 ]);
 
 const changeLogin = () => {

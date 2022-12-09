@@ -100,12 +100,12 @@ const tologin = () => {
         }
         state.userInfo = {
           userName: ruleForm.account,
-          userId: res.data.uid,
-          isAdmin: res.data.isAdmin
+          userId: res.data.props.uid,
+          isAdmin: res.data.props.isAdmin
         }
       })
       // 路由跳转
-      router.push({ path: res.data.uid })
+      router.push({ path: res.data.props.uid })
       userStore.userInfo.isAdmin ?
         ElMessage.success(`登录成功！管理员：<${ruleForm.account}>，欢迎回来！`) :
         ElMessage.success(`登录成功！用户：<${ruleForm.account}>，欢迎回来！`)

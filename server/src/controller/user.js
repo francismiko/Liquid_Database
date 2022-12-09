@@ -25,8 +25,7 @@ class UserController {
       ctx.body = {
         code: 200,
         msg: '登录成功',
-        uid: user.uid,
-        isAdmin: user.isAdmin,
+        props: user,
       }
     } else {
       ctx.body = {
@@ -66,7 +65,7 @@ class UserController {
       ctx.body = {
         code: 200,
         msg: '获取成功',
-        actions: actions,
+        props: actions,
       }
     } else {
       ctx.body = {
@@ -82,7 +81,7 @@ class UserController {
       ctx.body = {
         code: 200,
         msg: '获取成功',
-        exceptions: exceptions,
+        props: exceptions,
       }
     } else {
       ctx.body = {

@@ -5,15 +5,7 @@ import lodash from "lodash";
 type Result<T> = {
   code: number;
   msg: string;
-  props: T;
-  uid: string;
-  isAdmin: boolean;
-  actions: Array<object>;
-  mysql_host: string;
-  mysql_port: string;
-  mysql_user: string;
-  mysql_password: string;
-  mysql_database: string;
+  props: any;
   result: T;
 };
 

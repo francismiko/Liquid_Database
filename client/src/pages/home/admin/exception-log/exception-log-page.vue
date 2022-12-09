@@ -24,10 +24,10 @@ onMounted(() => {
 })
 
 const getExceptionLogs = () => {
-  axios.get('/user/actions')
+  axios.get('/user/exceptions')
     .then(res => {
       if (res.data.code === 200) {
-        tableData.value = res.data.actions
+        tableData.value = res.data.props
         ElMessage.success('已获取最新数据')
       } else {
         ElMessage.error('服务器出现异常，请联系管理员')

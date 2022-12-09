@@ -50,6 +50,11 @@ const router = createRouter({
           component: () =>
             import("@/pages/home/admin/action-log/action-log-page.vue"),
         },
+        {
+          path: "exception_logs",
+          component: () =>
+            import("@/pages/home/admin/exception-log/exception-log-page.vue"),
+        },
       ],
     },
   ],
