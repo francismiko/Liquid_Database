@@ -5,6 +5,7 @@ import lodash from "lodash";
 type Result<T> = {
   code: number;
   msg: string;
+  props: T;
   uid: string;
   isAdmin: boolean;
   actions: Array<object>;

@@ -136,26 +136,35 @@ const toSaveConfig = () => {
 const getMysqlConfig = () => {
   axios.get(`/connection/mysql/config/${userStore.userInfo.userId}`)
     .then(res => {
-      console.log(res.data);
+      /* mysqlStore.$subscribe((mutation, state) => {
+        ruleForm = Object.assign(ruleForm, {
+          host: res.data.props.mysql_host,
+          port: res.data.props.mysql_port,
+          user: res.data.props.mysql_user,
+          password: res.data.props.mysql_password,
+          database: res.data.props.mysql_database,
+        })
+        console.log(res.data.props);
+        console.log(mysqlStore.mysqlConfig);
+      }) */
       if (res.data.code === 200) {
         // 更新store
         mysqlStore.$patch((state) => {
           state.mysqlConfig = {
-            mysql_host: res.data.mysql_host,
-            mysql_port: res.data.mysql_port,
-            mysql_user: res.data.mysql_user,
-            mysql_password: res.data.mysql_password,
-            mysql_database: res.data.mysql_database,
+            mysql_host: res.data.props.mysql_host,
+            mysql_port: res.data.props.mysql_port,
+            mysql_user: res.data.props.mysql_user,
+            mysql_password: res.data.props.mysql_password,
+            mysql_database: res.data.props.mysql_database,
           }
         })
         ruleForm = Object.assign(ruleForm, {
-          host: res.data.mysql_host,
-          port: res.data.mysql_port,
-          user: res.data.mysql_user,
-          password: res.data.mysql_password,
-          database: res.data.mysql_database,
+          host: res.data.props.mysql_host,
+          port: res.data.props.mysql_port,
+          user: res.data.props.mysql_user,
+          password: res.data.props.mysql_password,
+          database: res.data.props.mysql_database,
         })
-        console.log(mysqlStore.mysqlConfig);
         ElMessage.success('已获取最新数据')
       } else {
         ElMessage.error('服务器出现异常，请联系管理员')

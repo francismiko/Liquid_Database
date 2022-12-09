@@ -22,7 +22,7 @@ class ConnectionController {
       ctx.body = {
         code: 200,
         msg: '获取成功',
-        data: config
+        props: config
       }
     } else {
       ctx.body = {
