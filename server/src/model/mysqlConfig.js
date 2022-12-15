@@ -1,4 +1,4 @@
-const mongoose = require('./index');
+const mongoose = require('mongoose');
 
 var mysqlSchema = new mongoose.Schema({
   uid: { type: String },
@@ -7,7 +7,7 @@ var mysqlSchema = new mongoose.Schema({
   mysql_user: { type: String },
   mysql_password: { type: String },
   mysql_database: { type: String },
-}, { versionKey: false });
+});
 
 var mysqlConfig = mongoose.model('mysql_configs', mysqlSchema)
 

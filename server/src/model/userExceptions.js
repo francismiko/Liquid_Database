@@ -1,4 +1,4 @@
-const mongoose = require('./index');
+const mongoose = require('mongoose');
 
 var UserExceptionsSchema = new mongoose.Schema({
   account: { type: String },
@@ -6,7 +6,7 @@ var UserExceptionsSchema = new mongoose.Schema({
   exception_code: { type: Number },
   exception_content: { type: String },
   exception_date: { type: Date },
-}, { versionKey: false })
+})
 
 var UserExceptions = mongoose.model('user_exceptions', UserExceptionsSchema)
 

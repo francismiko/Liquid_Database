@@ -5,7 +5,7 @@
         <el-header class="header">
           <el-menu :router="false" :default-active="router.currentRoute.value.path" class="el-menu-demo"
             mode="horizontal" :ellipsis="false" @select="handleSelect" text-color="#fff" background-color="#262f3e">
-            <el-menu-item @click="jumpTo(`/${userId}`)" index="home">
+            <el-menu-item index="home">
               <el-icon>
                 <HomeFilled />
               </el-icon>
@@ -86,7 +86,7 @@
                     </el-icon>
                     <span>用户管理</span>
                   </template>
-                  <el-menu-item index="1">权限管理</el-menu-item>
+                  <el-menu-item :index="userRouterMap.get(5_1)">权限管理</el-menu-item>
                   <el-menu-item disabled>用户组管理</el-menu-item>
                   <el-menu-item disabled>黑名单</el-menu-item>
                 </el-sub-menu>
@@ -145,13 +145,6 @@ const { isAdmin, userName, userId } = { ...userStore.userInfo };
 
 const router = useRouter();
 
-/**
- * @TODO 用:index替换路由跳转函数
- */
-const jumpTo = (path: string) => {
-  router.push({ path: `${path}` });
-};
-
 const reload = inject("reload", Function, true);
 
 // 路由映射
@@ -161,6 +154,7 @@ const userRouterMap: Map<number, string> = new Map([
   [2, `/${userId}/details`],
   [3, `/${userId}/logs`],
   [4, `/${userId}/settings`],
+  [5_1, `/${userId}/manage/permission`],
   [7, `/${userId}/action_logs`],
   [8, `/${userId}/exception_logs`],
 ]);

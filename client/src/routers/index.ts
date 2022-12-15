@@ -38,12 +38,24 @@ const router = createRouter({
           component: () => import("@/pages/home/user/detail/detail-page.vue"),
         },
         {
+          path: "logs",
+          component: () => import("@/pages/home/user/log/log-page.vue"),
+        },
+        {
           path: "settings",
           component: () => import("@/pages/home/user/setting/setting-page.vue"),
         },
         {
-          path: "logs",
-          component: () => import("@/pages/home/user/log/log-page.vue"),
+          path: "manage",
+          children: [
+            {
+              path: "permission",
+              component: () =>
+                import(
+                  "@/pages/home/admin/user-manage/permission-manage-page.vue"
+                ),
+            },
+          ],
         },
         {
           path: "action_logs",
