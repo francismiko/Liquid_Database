@@ -1,6 +1,30 @@
+const mysql = require('mysql2');
 const mysqlConfig = require('../model/mysqlConfig');
 
 class ConnectionService {
+  // 新建mysql实例
+  async newMysqlInstance(host, port, user, password, database) {
+    // 创建连接池
+    const db = mysql.createPool({
+      host: host,
+      port: port,
+      user: user,
+      password: password,
+      database: database,
+      connectionLimit: 100,
+    });
+    // 连接
+    db.getConnection(function (err, connection) {
+      if (err) {
+        console.log(err);
+        return false;
+      } else {
+        console.log('---MySQL连接池已创建---');
+        return true;
+      }
+    });
+  }
+
   // 保存mysql配置
   async saveMysqlConfig(id, host, port, user, password, database) {
     // 查询id，有则更新，没有则新建

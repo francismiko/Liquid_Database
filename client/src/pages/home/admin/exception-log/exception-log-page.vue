@@ -2,11 +2,11 @@
   <div>
     <item>
       <el-table :data="tableData" stripe style="width: 100%">
-        <el-table-column prop="action_date" label="日期" />
+        <el-table-column prop="exception_date" label="日期" />
         <el-table-column prop="account" label="用户名" />
-        <el-table-column prop="action_type" label="状态码" />
-        <el-table-column prop="action_type" label="异常类型" />
-        <el-table-column prop="action_content" label="异常内容" />
+        <el-table-column prop="exception_code" label="状态码" />
+        <el-table-column prop="exception_type" label="异常类型" />
+        <el-table-column prop="exception_content" label="异常内容" />
       </el-table>
     </item>
   </div>

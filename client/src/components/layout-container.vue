@@ -87,7 +87,7 @@
                     <span>用户管理</span>
                   </template>
                   <el-menu-item :index="userRouterMap.get(5_1)">权限管理</el-menu-item>
-                  <el-menu-item disabled>用户组管理</el-menu-item>
+                  <el-menu-item>用户组管理</el-menu-item>
                   <el-menu-item disabled>黑名单</el-menu-item>
                 </el-sub-menu>
                 <el-menu-item v-if="isAdmin">

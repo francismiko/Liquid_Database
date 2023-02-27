@@ -46,7 +46,7 @@ class UserService {
         return;
       } else {
         console.log('用户行为记录成功');
-        console.log(data);
+        // console.log(data);
       }
     });
   }
@@ -64,7 +64,7 @@ class UserService {
         return;
       } else {
         console.log('用户异常记录成功');
-        console.log(data);
+        // console.log(data);
       }
     });
   }

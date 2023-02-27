@@ -22,7 +22,7 @@
         </el-form-item>
       </el-form>
       <div class="center-container">
-        <el-button type="primary">新建实例</el-button>
+        <el-button @click="newInstance(ruleFormRef)" type="primary">新建实例</el-button>
         <el-button @click="saveConfig(ruleFormRef)" type="primary" plain>保存配置</el-button>
       </div>
     </item>
@@ -38,6 +38,7 @@ import { MysqlConfiguration } from '@/types/configuration';
 import axios from '@/utils/axios';
 import axiosRequest from '@/utils/request';
 import { useMysqlStore } from '@/store/mysql';
+import { debounce, throttle } from 'lodash';
 
 // 引入store
 const userStore = useUserStore();
@@ -72,7 +73,70 @@ onMounted(() => {
   getMysqlConfig();
 })
 
-const saveConfig = (formEl: FormInstance | undefined) => {
+// 新建实例
+const newInstance= ((formEl: FormInstance | undefined) => {
+  if (!formEl) return
+  formEl.validate((valid: any) => {
+    if (valid) {
+      toNewInstance();
+    } else {
+      return false
+    }
+  })
+})
+
+const toNewInstance = () => {
+  const config: MysqlConfiguration = {
+    id: userStore.userInfo.userId,
+    host: ruleForm.host,
+    port: ruleForm.port,
+    user: ruleForm.user,
+    password: ruleForm.password,
+    database: ruleForm.database,
+  }
+  axios.post('/connection/mysql/instance', config)
+    .then(res => {
+      if (res.data.code === 200) {
+        axiosRequest.postActions({
+          account: userStore.userInfo.userName,
+          type: '新建实例',
+          content: `新建实例,地址:${config.host},端口:${config.port},用户名:${config.user},密码:${config.password},数据库:${config.database}`,
+        })
+        ElNotification({
+          title: 'Success',
+          message: '新建实例成功！',
+          type: 'success',
+        })
+      } else {
+        axiosRequest.postException({
+          account: userStore.userInfo.userName,
+          type: '新建实例',
+          code: res.data.code,
+          content: '新建实例失败',
+        })
+        ElNotification({
+          title: 'Error',
+          message: '新建实例失败！',
+          type: 'error',
+        })
+      }
+    }).catch(err => {
+      axiosRequest.postException({
+        account: userStore.userInfo.userName,
+        type: '新建实例',
+        code: err.response.status,
+        content: `${err}`,
+      })
+      ElNotification({
+        title: 'Error',
+        message: `${err}`,
+        type: 'error',
+      })
+    })
+}
+
+// 保存设置(节流)
+const saveConfig = throttle((formEl: FormInstance | undefined) => {
   if (!formEl) return
   formEl.validate((valid: any) => {
     if (valid) {
@@ -81,7 +145,7 @@ const saveConfig = (formEl: FormInstance | undefined) => {
       return false
     }
   })
-}
+}, 1000)
 
 const toSaveConfig = () => {
   const config: MysqlConfiguration = {

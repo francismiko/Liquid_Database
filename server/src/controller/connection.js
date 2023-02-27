@@ -1,6 +1,16 @@
 const Connection = require('../service/connection');
 
 class ConnectionController {
+  // 新建mysql实例
+  async newMysqlInstance(ctx, next) {
+    const { host, port, user, password, database } = ctx.request.body
+    await Connection.newMysqlInstance(host, port, user, password, database)
+    ctx.body = {
+      code: 200,
+      msg: '新建成功'
+    }
+  }
+
   // 保存mysql配置
   async saveMysqlConfig(ctx, next) {
     const { id, host, port, user, password, database } = ctx.request.body
