@@ -25,6 +25,19 @@ class ConnectionService {
     });
   }
 
+  // 释放mysql连接池
+  async releaseMysqlInstance() {
+    db.end(function (err) {
+      if (err) {
+        console.log(err);
+        return false;
+      } else {
+        console.log('---MySQL连接池已释放---');
+        return true;
+      }
+    });
+  }
+
   // 保存mysql配置
   async saveMysqlConfig(id, host, port, user, password, database) {
     // 查询id，有则更新，没有则新建
@@ -43,7 +56,7 @@ class ConnectionService {
         return false;
       } else if (data) {
         console.log('mysql配置更新成功');
-        console.log(data);
+        // console.log(data);
         return true;
       } else if (data === null) {
         mysqlConfig.create({

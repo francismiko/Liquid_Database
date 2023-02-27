@@ -22,7 +22,9 @@
         </el-form-item>
       </el-form>
       <div class="center-container">
-        <el-button @click="newInstance(ruleFormRef)" type="primary">新建实例</el-button>
+        <el-button v-if="mysqlStore.mysqlStatus?.isConnected" @click="release" type="primary">断开连接</el-button>
+        <el-button v-if="!mysqlStore.mysqlStatus?.isConnected" @click="newInstance(ruleFormRef)"
+          type="primary">新建实例</el-button>
         <el-button @click="saveConfig(ruleFormRef)" type="primary" plain>保存配置</el-button>
       </div>
     </item>
@@ -74,7 +76,7 @@ onMounted(() => {
 })
 
 // 新建实例
-const newInstance= ((formEl: FormInstance | undefined) => {
+const newInstance = ((formEl: FormInstance | undefined) => {
   if (!formEl) return
   formEl.validate((valid: any) => {
     if (valid) {
@@ -97,6 +99,7 @@ const toNewInstance = () => {
   axios.post('/connection/mysql/instance', config)
     .then(res => {
       if (res.data.code === 200) {
+        mysqlStore.mysqlStatus.isConnected = true;
         axiosRequest.postActions({
           account: userStore.userInfo.userName,
           type: '新建实例',
@@ -124,6 +127,50 @@ const toNewInstance = () => {
       axiosRequest.postException({
         account: userStore.userInfo.userName,
         type: '新建实例',
+        code: err.response.status,
+        content: `${err}`,
+      })
+      ElNotification({
+        title: 'Error',
+        message: `${err}`,
+        type: 'error',
+      })
+    })
+}
+
+// 断开连接
+const release = () => {
+  axios.post('/connection/mysql/release')
+    .then(res => {
+      if (res.data.code === 200) {
+        mysqlStore.mysqlStatus.isConnected = false;
+        axiosRequest.postActions({
+          account: userStore.userInfo.userName,
+          type: '断开连接',
+          content: '已断开远程服务器连接',
+        })
+        ElNotification({
+          title: 'Success',
+          message: '已断开连接！',
+          type: 'success',
+        })
+      } else {
+        axiosRequest.postException({
+          account: userStore.userInfo.userName,
+          type: '断开连接',
+          code: res.data.code,
+          content: '断开连接失败',
+        })
+        ElNotification({
+          title: 'Error',
+          message: '断开连接失败！',
+          type: 'error',
+        })
+      }
+    }).catch(err => {
+      axiosRequest.postException({
+        account: userStore.userInfo.userName,
+        type: '断开连接',
         code: err.response.status,
         content: `${err}`,
       })

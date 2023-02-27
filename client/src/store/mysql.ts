@@ -11,7 +11,11 @@ export const useMysqlStore = defineStore(
       mysql_password: "",
       mysql_database: "",
     });
-    return { mysqlConfig };
+
+    const mysqlStatus = ref({
+      isConnected: false,
+    });
+    return { mysqlConfig, mysqlStatus };
   },
   {
     persist: true,
