@@ -5,8 +5,8 @@ export const useMysqlStore = defineStore(
   "mysql",
   () => {
     const mysqlConfig = ref({
-      mysql_host: "1",
-      mysql_port: "2",
+      mysql_host: "",
+      mysql_port: "",
       mysql_user: "",
       mysql_password: "",
       mysql_database: "",

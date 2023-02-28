@@ -4,8 +4,8 @@ const mysqlConfig = require('../model/mysqlConfig');
 class ConnectionService {
   // 新建mysql实例
   async newMysqlInstance(host, port, user, password, database) {
-    // 创建连接池
-    const db = mysql.createPool({
+    // 初始化mysql连接池
+    let db = mysql.createPool({
       host: host,
       port: port,
       user: user,
@@ -19,20 +19,30 @@ class ConnectionService {
         console.log(err);
         return false;
       } else {
-        console.log('---MySQL连接池已创建---');
+        console.log('---MySQL连接池已连接---');
         return true;
       }
     });
   }
 
-  // 释放mysql连接池
-  async releaseMysqlInstance() {
+  // 断开mysql连接池
+  async releaseMysqlInstance(host, port, user, password, database) {
+    // 初始化mysql连接池
+    let db = mysql.createPool({
+      host: host,
+      port: port,
+      user: user,
+      password: password,
+      database: database,
+      connectionLimit: 100,
+    });
+    // 断开连接
     db.end(function (err) {
       if (err) {
         console.log(err);
         return false;
       } else {
-        console.log('---MySQL连接池已释放---');
+        console.log('---MySQL连接池已断开---');
         return true;
       }
     });

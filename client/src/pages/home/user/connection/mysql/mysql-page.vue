@@ -140,7 +140,15 @@ const toNewInstance = () => {
 
 // 断开连接
 const release = () => {
-  axios.post('/connection/mysql/release')
+  const config: MysqlConfiguration = {
+    id: userStore.userInfo.userId,
+    host: ruleForm.host,
+    port: ruleForm.port,
+    user: ruleForm.user,
+    password: ruleForm.password,
+    database: ruleForm.database,
+  }
+  axios.post('/connection/mysql/release', config)
     .then(res => {
       if (res.data.code === 200) {
         mysqlStore.mysqlStatus.isConnected = false;

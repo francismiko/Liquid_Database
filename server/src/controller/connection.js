@@ -11,9 +11,10 @@ class ConnectionController {
     }
   }
 
-  // 释放mysql连接池
+  // 断开mysql连接池
   async releaseMysqlInstance(ctx, next) {
-    await Connection.releaseMysqlInstance()
+    const { host, port, user, password, database } = ctx.request.body
+    await Connection.releaseMysqlInstance(host, port, user, password, database)
     ctx.body = {
       code: 200,
       msg: '释放成功'
