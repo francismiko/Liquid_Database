@@ -1,51 +1,51 @@
 const mysql = require('mysql2');
+const Sequelize = require('sequelize');
 const mysqlConfig = require('../model/mysqlConfig');
 
 class ConnectionService {
   // 新建mysql实例
   async newMysqlInstance(host, port, user, password, database) {
-    // 初始化mysql连接池
-    let db = mysql.createPool({
-      host: host,
+    // 初始化sequelize连接池
+    const sequelize = new Sequelize(database, user, password, {
+      host: host,    //数据库地址,默认本机
       port: port,
-      user: user,
-      password: password,
-      database: database,
-      connectionLimit: 100,
+      dialect: 'mysql',
+      pool: {   //连接池设置
+        max: 10, //最大连接数
+        min: 0, //最小连接数
+        idle: 10000
+      },
     });
-    // 连接
-    db.getConnection(function (err, connection) {
-      if (err) {
-        console.log(err);
-        return false;
-      } else {
-        console.log('---MySQL连接池已连接---');
-        return true;
-      }
-    });
+    // 测试连接
+    try {
+      await sequelize.authenticate();
+      console.log('---MySQL连接成功---');
+    } catch (error) {
+      console.error('---MySQL连接失败---', error);
+    }
   }
 
   // 断开mysql连接池
   async releaseMysqlInstance(host, port, user, password, database) {
-    // 初始化mysql连接池
-    let db = mysql.createPool({
-      host: host,
+    // 初始化sequelize连接池
+    const sequelize = new Sequelize(database, user, password, {
+      host: host,    //数据库地址,默认本机
       port: port,
-      user: user,
-      password: password,
-      database: database,
-      connectionLimit: 100,
+      dialect: 'mysql',
+      pool: {   //连接池设置
+        max: 10, //最大连接数
+        min: 0, //最小连接数
+        idle: 10000
+      },
     });
     // 断开连接
-    db.end(function (err) {
-      if (err) {
-        console.log(err);
-        return false;
-      } else {
-        console.log('---MySQL连接池已断开---');
-        return true;
-      }
-    });
+    try {
+      await sequelize.close();
+      console.log('----MySQL连接池已断开----');
+    }
+    catch (error) {
+      console.error('----MySQL连接池断开失败----', error);
+    }
   }
 
   // 保存mysql配置

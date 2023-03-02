@@ -3,8 +3,8 @@
     <div class="common-layout">
       <el-container>
         <el-header class="header">
-          <el-menu :router="false" :default-active="router.currentRoute.value.path" class="el-menu-demo"
-            mode="horizontal" :ellipsis="false" @select="handleSelect" text-color="#fff" background-color="#262f3e">
+          <el-menu :router="false" :default-active="router.currentRoute.value.path" class="el-menu-demo" mode="horizontal"
+            :ellipsis="false" @select="handleSelect" text-color="#fff" background-color="#262f3e">
             <el-menu-item index="home">
               <el-icon>
                 <HomeFilled />
@@ -24,17 +24,17 @@
                   <UserFilled />
                 </el-icon>
                 <span>{{
-                    isLogin ? isAdmin ?
-                      `${userName} (超级用户)` :
-                      `${userName} (普通用户)` :
-                      "未登录"
+                  isLogin ? isAdmin ?
+                  `${userName} (超级用户)` :
+                  `${userName} (普通用户)` :
+                  "未登录"
                 }}
                 </span>
               </template>
               <el-menu-item index="2-1">个人中心</el-menu-item>
               <el-menu-item index="2-2">设置</el-menu-item>
               <el-menu-item @click="changeLogin" index="2-3">{{
-                  isLogin ? "注销账号" : "点此登录"
+                isLogin ? "注销账号" : "点此登录"
               }}
               </el-menu-item>
             </el-sub-menu>
@@ -52,7 +52,7 @@
                     <el-icon>
                       <Connection />
                     </el-icon>
-                    <span>连接本地数据库</span>
+                    <span>连接远程数据库</span>
                   </template>
                   <el-menu-item :index="userRouterMap.get(1_1)">MySQL</el-menu-item>
                   <el-menu-item :index="userRouterMap.get(1_2)">MongoDB</el-menu-item>

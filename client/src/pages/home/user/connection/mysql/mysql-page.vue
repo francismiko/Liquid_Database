@@ -22,7 +22,7 @@
         </el-form-item>
       </el-form>
       <div class="center-container">
-        <el-button v-if="mysqlStore.mysqlStatus?.isConnected" @click="release" type="primary">断开连接</el-button>
+        <el-button v-if="mysqlStore.mysqlStatus?.isConnected" @click="release" type="danger">断开连接</el-button>
         <el-button v-if="!mysqlStore.mysqlStatus?.isConnected" @click="newInstance(ruleFormRef)"
           type="primary">新建实例</el-button>
         <el-button @click="saveConfig(ruleFormRef)" type="primary" plain>保存配置</el-button>
@@ -36,10 +36,10 @@ import item from '@/components/item-container.vue'
 import { ElMessage, ElNotification, FormInstance } from 'element-plus';
 import { onMounted, reactive, ref } from 'vue';
 import { useUserStore } from '@/store/user';
+import { useMysqlStore } from '@/store/mysql';
 import { MysqlConfiguration } from '@/types/configuration';
 import axios from '@/utils/axios';
 import axiosRequest from '@/utils/request';
-import { useMysqlStore } from '@/store/mysql';
 import { debounce, throttle } from 'lodash';
 
 // 引入store
@@ -96,6 +96,16 @@ const toNewInstance = () => {
     password: ruleForm.password,
     database: ruleForm.database,
   }
+  // 更新store
+  mysqlStore.$patch((state) => {
+    state.mysqlConfig = {
+      mysql_host: ruleForm.host,
+      mysql_port: ruleForm.port,
+      mysql_user: ruleForm.user,
+      mysql_password: ruleForm.password,
+      mysql_database: ruleForm.database,
+    }
+  })
   axios.post('/connection/mysql/instance', config)
     .then(res => {
       if (res.data.code === 200) {
