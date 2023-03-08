@@ -28,7 +28,7 @@ const config: MysqlConfiguration = {
 }
 
 const post = () => {
-  axios.post('/mysql/post', config)
+  axios.post('/test/post', config)
     .then(res => {
       console.log(res);
     })

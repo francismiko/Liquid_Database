@@ -40,7 +40,7 @@ import { useMysqlStore } from '@/store/mysql';
 import { MysqlConfiguration } from '@/types/configuration';
 import axios from '@/utils/axios';
 import axiosRequest from '@/utils/request';
-import { debounce, throttle } from 'lodash';
+import { throttle } from 'lodash';
 
 // 引入store
 const userStore = useUserStore();

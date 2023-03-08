@@ -19,12 +19,15 @@ class ConnectionService {
     // 测试连接
     try {
       await sequelize.authenticate();
-      console.log('---MySQL连接成功---');
+      setTimeout(() => {
+        console.log('----MySQL连接成功----');
+      }, 100);
     } catch (error) {
-      console.error('---MySQL连接失败---', error);
+      setTimeout(() => {
+        console.error('----MySQL连接失败----', error);
+      }, 100);
     }
   }
-
   // 断开mysql连接池
   async releaseMysqlInstance(host, port, user, password, database) {
     // 初始化sequelize连接池
@@ -41,10 +44,13 @@ class ConnectionService {
     // 断开连接
     try {
       await sequelize.close();
-      console.log('----MySQL连接池已断开----');
-    }
-    catch (error) {
-      console.error('----MySQL连接池断开失败----', error);
+      setTimeout(() => {
+        console.log('----MySQL连接池已断开----');
+      }, 100);
+    } catch (error) {
+      setTimeout(() => {
+        console.error('----MySQL连接池断开失败----', error);
+      }, 100);
     }
   }
 

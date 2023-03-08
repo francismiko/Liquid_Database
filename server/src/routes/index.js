@@ -1,32 +1,36 @@
 const Router = require('koa-router');
+const test = require('../test/router');
 const user = require('./user');
 const connection = require('./connection');
+const operational = require('./operational');
 
 const router = new Router({ prefix: '/api' });
 
 // 注册api中间件
+router.use(test.routes());
 router.use(user.routes());
 router.use(connection.routes());
+router.use(operational.routes());
 
 // api可用性测试
-// router.get('/', async (ctx) => {
-//   ctx.body = "GET IS OK";
-// })
+router.get('/', async (ctx) => {
+  ctx.body = "GET IS OK";
+})
 
-// router.post('/', async (ctx) => {
-//   ctx.body = 'POST IS OK';
-// });
+router.post('/', async (ctx) => {
+  ctx.body = 'POST IS OK';
+});
 
-// router.put('/', async (ctx) => {
-//   ctx.body = 'PUT IS OK';
-// });
+router.put('/', async (ctx) => {
+  ctx.body = 'PUT IS OK';
+});
 
-// router.delete('/', async (ctx) => {
-//   ctx.body = 'DELETE IS OK';
-// });
+router.delete('/', async (ctx) => {
+  ctx.body = 'DELETE IS OK';
+});
 
-// router.patch('/', async (ctx) => {
-//   ctx.body = 'PATCH IS OK';
-// });
+router.patch('/', async (ctx) => {
+  ctx.body = 'PATCH IS OK';
+});
 
 module.exports = router;
