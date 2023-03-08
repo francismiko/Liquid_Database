@@ -18,20 +18,28 @@ import { MysqlConfiguration } from '@/types/configuration';
 const userStore = useUserStore();
 const mysqlStore = useMysqlStore();
 
+const { isConnected } = mysqlStore.mysqlStatus;
+const { mysql_host, mysql_port, mysql_user, mysql_password, mysql_database } = mysqlStore.mysqlConfig;
+
 const config: MysqlConfiguration = {
   id: userStore.userInfo.userId,
-  host: mysqlStore.mysqlConfig.mysql_host,
-  port: mysqlStore.mysqlConfig.mysql_port,
-  user: mysqlStore.mysqlConfig.mysql_user,
-  password: mysqlStore.mysqlConfig.mysql_password,
-  database: mysqlStore.mysqlConfig.mysql_database,
+  host: mysql_host,
+  port: mysql_port,
+  user: mysql_user,
+  password: mysql_password,
+  database: mysql_database,
 }
 
 const post = () => {
-  axios.post('/test/post', config)
-    .then(res => {
-      console.log(res);
-    })
+  if (isConnected) {
+    // 数据库连接时才能发起请求
+    axios.post('/test/post', config)
+      .then(res => {
+        console.log(res);
+      })
+  } else {
+    console.log('数据库未连接');
+  }
 }
 </script >
 
