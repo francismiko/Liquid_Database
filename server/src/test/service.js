@@ -16,25 +16,7 @@ class UnitTestService {
       },
     });
 
-    var test = sequelize.define('test', {
-      id: {
-        type: Sequelize.STRING(50),
-        primaryKey: true
-      },
-      name: Sequelize.STRING(100),
-    }, {
-      timestamps: false
-    });
-
-    var now = Date.now();
-    test.create({
-      id: 'g-' + now,
-      name: 'Gaffey',
-    }).then(function (p) {
-      console.log('created.' + JSON.stringify(p));
-    }).catch(function (err) {
-      console.log('failed: ' + err);
-    });
+    console.log(sequelize);
   }
 }
 

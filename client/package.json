@@ -19,6 +19,7 @@
     "pinia": "^2.0.26",
     "pinia-plugin-persistedstate": "^2.3.0",
     "sass": "^1.55.0",
+    "ts-node": "^10.9.1",
     "vue": "^3.2.41",
     "vue-axios": "^3.5.1",
     "vue-router": "^4.1.6"

@@ -9,7 +9,7 @@ class UnitTestController {
       code: 200,
       msg: 'success',
       data: null
-    }
+    }    
   }
 }
 
