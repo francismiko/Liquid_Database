@@ -1,5 +1,5 @@
 // 单元测试模块
-const UnitTest = require('./service');
+const UnitTest = require('./service.test');
 
 class UnitTestController {
   async post(ctx) {
