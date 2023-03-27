@@ -1,21 +1,12 @@
 const mysql = require('mysql2');
-const Sequelize = require('sequelize');
+const sequelize = require('../lib/sequelize');
 const mysqlConfig = require('../model/mysqlConfig');
 
 class ConnectionService {
   // 新建mysql实例
   async newMysqlInstance(host, port, user, password, database) {
     // 初始化sequelize连接池
-    const sequelize = new Sequelize(database, user, password, {
-      host: host,    //数据库地址,默认本机
-      port: port,
-      dialect: 'mysql',
-      pool: {   //连接池设置
-        max: 10, //最大连接数
-        min: 0, //最小连接数
-        idle: 10000
-      },
-    });
+    const sequelize = sequelize(host, port, user, password, database);
     // 测试连接
     try {
       await sequelize.authenticate();
@@ -31,16 +22,7 @@ class ConnectionService {
   // 断开mysql连接池
   async releaseMysqlInstance(host, port, user, password, database) {
     // 初始化sequelize连接池
-    const sequelize = new Sequelize(database, user, password, {
-      host: host,    //数据库地址,默认本机
-      port: port,
-      dialect: 'mysql',
-      pool: {   //连接池设置
-        max: 10, //最大连接数
-        min: 0, //最小连接数
-        idle: 10000
-      },
-    });
+    const sequelize = await sequelize(host, port, user, password, database);
     // 断开连接
     try {
       await sequelize.close();

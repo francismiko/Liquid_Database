@@ -1,5 +1,4 @@
 const Router = require('koa-router');
-const test = require('../test/router');
 const user = require('./user');
 const connection = require('./connection');
 const operational = require('./operational');
@@ -7,7 +6,6 @@ const operational = require('./operational');
 const router = new Router({ prefix: '/api' });
 
 // 注册api中间件
-router.use(test.routes());
 router.use(user.routes());
 router.use(connection.routes());
 router.use(operational.routes());

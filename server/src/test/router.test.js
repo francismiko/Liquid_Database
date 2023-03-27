@@ -4,7 +4,7 @@ const testRouter = new Router({ prefix: '/test' });
 const UnitTest = require('./controller');
 
 // testRouter.get('/get', UnitTest.get);
-testRouter.post('/post', UnitTest.post);
+// testRouter.post('/post', UnitTest.post);
 // testRouter.put('/put', UnitTest.put);
 // testRouter.delete('/delete', UnitTest.delete);
 
