@@ -1,12 +1,13 @@
 const mysql = require('mysql2');
-const sequelize = require('../lib/sequelize');
+const sequelize_init_ = require('../lib/sequelize');
 const mysqlConfig = require('../model/mysqlConfig');
 
 class ConnectionService {
   // 新建mysql实例
   async newMysqlInstance(host, port, user, password, database) {
+    const sequelize_init_ = require('../lib/sequelize');
     // 初始化sequelize连接池
-    const sequelize = sequelize(host, port, user, password, database);
+    const sequelize = await sequelize_init_(host, port, user, password, database);
     // 测试连接
     try {
       await sequelize.authenticate();
@@ -22,7 +23,7 @@ class ConnectionService {
   // 断开mysql连接池
   async releaseMysqlInstance(host, port, user, password, database) {
     // 初始化sequelize连接池
-    const sequelize = await sequelize(host, port, user, password, database);
+    const sequelize = await sequelize_init_(host, port, user, password, database);
     // 断开连接
     try {
       await sequelize.close();

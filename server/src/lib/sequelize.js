@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 
-const sequelize = (host, port, user, password, database) => {
+const sequelize_init_ = (host, port, user, password, database) => {
   return new Sequelize(database, user, password, {
     host: host,    //数据库地址,默认本机
     port: port,
@@ -13,4 +13,4 @@ const sequelize = (host, port, user, password, database) => {
   });
 }
 
-module.exports = sequelize;
+module.exports = sequelize_init_;
