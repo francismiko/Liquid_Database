@@ -5,19 +5,14 @@ const mysqlConfig = require('../model/mysqlConfig');
 class ConnectionService {
   // 新建mysql实例
   async newMysqlInstance(host, port, user, password, database) {
-    const sequelize_init_ = require('../lib/sequelize');
     // 初始化sequelize连接池
     const sequelize = await sequelize_init_(host, port, user, password, database);
-    // 测试连接
+    // 连接
     try {
       await sequelize.authenticate();
-      setTimeout(() => {
-        console.log('----MySQL连接成功----');
-      }, 100);
+      setImmediate(() => { console.log('----MySQL连接成功----'); });
     } catch (error) {
-      setTimeout(() => {
-        console.error('----MySQL连接失败----', error);
-      }, 100);
+      setImmediate(() => { console.error('----MySQL连接失败----', error); });
     }
   }
   // 断开mysql连接池
@@ -27,13 +22,9 @@ class ConnectionService {
     // 断开连接
     try {
       await sequelize.close();
-      setTimeout(() => {
-        console.log('----MySQL连接池已断开----');
-      }, 100);
+      setImmediate(() => { console.log('----MySQL连接池断开成功----'); });
     } catch (error) {
-      setTimeout(() => {
-        console.error('----MySQL连接池断开失败----', error);
-      }, 100);
+      setImmediate(() => { console.error('----MySQL连接池断开失败----', error); });
     }
   }
 
