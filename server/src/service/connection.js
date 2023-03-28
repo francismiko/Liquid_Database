@@ -1,4 +1,3 @@
-const mysql = require('mysql2');
 const sequelize_init_ = require('../lib/sequelize');
 const mysqlConfig = require('../model/mysqlConfig');
 
@@ -11,6 +10,8 @@ class ConnectionService {
     try {
       await sequelize.authenticate();
       setImmediate(() => { console.log('----MySQL连接成功----'); });
+      const tableNames = await sequelize.getQueryInterface().showAllTables();
+      console.log(tableNames);
     } catch (error) {
       setImmediate(() => { console.error('----MySQL连接失败----', error); });
     }

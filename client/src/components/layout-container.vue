@@ -151,7 +151,7 @@ const reload = inject("reload", Function, true);
 const userRouterMap: Map<number, string> = new Map([
   [1_1, `/${userId}/connection/mysql`],
   [1_2, `/${userId}/connection/mongodb`],
-  [2, `/${userId}/details`],
+  [2, `/${userId}/tables`],
   [3, `/${userId}/logs`],
   [4, `/${userId}/settings`],
   [5_1, `/${userId}/manage/permission`],

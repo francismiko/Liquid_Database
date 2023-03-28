@@ -73,6 +73,7 @@ class UserController {
         msg: '获取失败',
       }
     }
+    console.log(actions);
   }
 
   async getExceptions(ctx, next) {

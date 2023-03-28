@@ -53,4 +53,4 @@ class ConnectionController {
   }
 }
 
-module.exports = new ConnectionController()
+module.exports = new ConnectionController();

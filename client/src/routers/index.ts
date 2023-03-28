@@ -34,8 +34,8 @@ const router = createRouter({
           ],
         },
         {
-          path: "details",
-          component: () => import("@/pages/home/user/detail/detail-page.vue"),
+          path: "tables",
+          component: () => import("@/pages/home/user/detail/tables-page.vue"),
         },
         {
           path: "logs",
