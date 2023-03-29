@@ -1,9 +1,9 @@
-const Operational = require("../service/operational");
+const Business = require("../service/business");
 
-class OperationalController {
+class BusinessController {
   async queryTables(ctx, next) {
     const { host, port, user, password, database } = ctx.request.body
-    const tables = await Operational.queryTables(host, port, user, password, database)
+    const tables = await Business.queryTables(host, port, user, password, database)
     if (tables) {
       ctx.body = {
         code: 200,
@@ -16,9 +16,7 @@ class OperationalController {
         msg: '获取失败',
       }
     }
-    console.log(tables);
-    
   }
 }
 
-module.exports = new OperationalController();
+module.exports = new BusinessController();

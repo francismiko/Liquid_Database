@@ -57,7 +57,7 @@ const handleDelete = (index: number, row) => {
 }
 
 const getMysqlTables = () => {
-  axios.post(`/operational/mysql/query-tables`, config)
+  axios.post(`/business/mysql/query-tables`, config)
     .then(res => {
       if (res.data.code === 200) {
         tableData.value = res.data.props
